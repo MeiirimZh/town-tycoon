@@ -4,18 +4,20 @@ import pygame
 from config import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
 from scenes.town import Town
 from scenes.store import Store
+from data import Data
 
 
 class Game:
     def __init__(self):
         pygame.init()
 
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
 
         self.game_state_manager = GameStateManager('Town')
-        self.town = Town(self.screen, self.game_state_manager)
-        self.store = Store(self.screen, self.game_state_manager)
+        self.data = Data()
+        self.town = Town(self.screen, self.game_state_manager, self.data)
+        self.store = Store(self.screen, self.game_state_manager, self.data)
         self.states = {'Town': self.town, 'Store': self.store}
 
         pygame.display.set_caption("Town Tycoon")
