@@ -60,10 +60,10 @@ class Button:
             self.is_hovered = False
 
     def click(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # ЛКМ нажата
-            if self.rect.collidepoint(event.pos):
+        if self.rect.collidepoint(event.pos):
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 self.is_pressed = True
-                self.click_func()  # Вызываем функцию
+                self.click_func()
                 
-        if event.type == pygame.MOUSEBUTTONUP and event.button == 1:  # ЛКМ отпущена
+        if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             self.is_pressed = False
