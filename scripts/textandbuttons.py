@@ -13,9 +13,10 @@ class Text:
         self.position = position
         self.display = display
 
-    def draw(self):
+    def draw(self, new_pos=None):
+        pos = new_pos if new_pos else self.position
         text_surface = self.font.render(self.msg, False, self.color)
-        text_rect = text_surface.get_rect(topleft=self.position)
+        text_rect = text_surface.get_rect(topleft=pos)
         self.display.blit(text_surface, text_rect)
 
 
@@ -61,7 +62,7 @@ class Button:
                 self.is_pressed = True
                 if not self.was_pressed:
                     self.was_pressed = True
-                    return self.click_func
+                    self.click_func()
             else:
                 self.is_pressed = False
                 self.was_pressed = False
