@@ -26,7 +26,6 @@ class Town:
 
         self.button_f = ""
 
-
     def run(self, events):
         mouse_pos = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()
@@ -65,8 +64,6 @@ class Town:
                 self.data.stone += self.data.stone_click_value
                 print(f'Stone: {self.data.stone}')
             self.button_f = ""
-
-
 
         for event in events:
             if event.type == pygame.KEYDOWN:
