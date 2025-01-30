@@ -4,6 +4,7 @@ import pygame
 from config import SCREENWIDTH, SCREENHEIGHT, FPS
 from scenes.town import Town
 from scenes.store import Store
+from scenes.mini_games.animal_hunt import AnimalHunt
 from data import Data
 
 
@@ -18,7 +19,8 @@ class Game:
         self.data = Data()
         self.town = Town(self.screen, self.game_state_manager, self.data)
         self.store = Store(self.screen, self.game_state_manager, self.data)
-        self.states = {'Town': self.town, 'Store': self.store}
+        self.animal_hunt = AnimalHunt(self.screen, self.game_state_manager, self.data)
+        self.states = {'Town': self.town, 'Store': self.store, 'Animal Hunt': self.animal_hunt}
 
         pygame.display.set_caption("Town Tycoon")
 

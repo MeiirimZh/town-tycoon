@@ -6,7 +6,7 @@ class Data:
 
         # Resources
         self.resource_types = ['Food', 'Water', 'Wood', 'Stone']
-        self.food = 800
+        self.food = 1000
         self.water = 2500
         self.wood = 0
         self.stone = 0

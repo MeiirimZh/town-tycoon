@@ -108,5 +108,7 @@ class Town:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
                     self.game_state_manager.set_state('Store')
+                if event.key == pygame.K_s:
+                    self.game_state_manager.set_state('Animal Hunt')
             for b in self.button_list:
                 b.click(event)
