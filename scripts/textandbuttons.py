@@ -18,6 +18,9 @@ class Text:
         text_surface = self.font.render(self.msg, False, self.color)
         text_rect = text_surface.get_rect(topleft=pos)
         self.display.blit(text_surface, text_rect)
+    
+    def update_msg(self, new_msg):
+        self.msg = new_msg
 
 
 class Button:
@@ -56,14 +59,11 @@ class Button:
         else:
             self.is_hovered = False
 
-    def click(self, mouse_pos, mouse_click):
-        if self.rect.collidepoint(mouse_pos):
-            if mouse_click[0]:
+    def click(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # ЛКМ нажата
+            if self.rect.collidepoint(event.pos):
                 self.is_pressed = True
-                if not self.was_pressed:
-                    self.was_pressed = True
-                    self.click_func()
-            else:
-                self.is_pressed = False
-                self.was_pressed = False
-        return None
+                self.click_func()  # Вызываем функцию
+                
+        if event.type == pygame.MOUSEBUTTONUP and event.button == 1:  # ЛКМ отпущена
+            self.is_pressed = False
