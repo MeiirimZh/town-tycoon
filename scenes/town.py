@@ -1,6 +1,8 @@
 import pygame
 import random
 
+from scripts.timer import Timer
+
 
 class Town:
     def __init__(self, display, game_state_manager, data):
@@ -8,8 +10,19 @@ class Town:
         self.game_state_manager = game_state_manager
         self.data = data
 
+        self.timer = Timer(True)
+        self.timer.start(1, 0)
+
     def run(self, events):
+        current_time = pygame.time.get_ticks()
+
         self.display.fill('blue')
+
+        self.timer.update(current_time)
+
+        if self.timer.has_finished():
+            self.data.wood += 1
+            print(self.data.wood)
 
         for event in events:
             if event.type == pygame.KEYDOWN:
