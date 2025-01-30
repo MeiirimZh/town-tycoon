@@ -17,9 +17,9 @@ class Game:
 
         self.game_state_manager = GameStateManager('Town')
         self.data = Data()
-        self.town = Town(self.screen, self.game_state_manager, self.data)
         self.store = Store(self.screen, self.game_state_manager, self.data)
         self.animal_hunt = AnimalHunt(self.screen, self.game_state_manager, self.data)
+        self.town = Town(self.screen, self.game_state_manager, self.data, self.animal_hunt)
         self.states = {'Town': self.town, 'Store': self.store, 'Animal Hunt': self.animal_hunt}
 
         pygame.display.set_caption("Town Tycoon")

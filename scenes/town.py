@@ -12,10 +12,11 @@ from scripts.utils import get_quarter, get_section
 
 
 class Town:
-    def __init__(self, display, game_state_manager, data):
+    def __init__(self, display, game_state_manager, data, animal_hunt):
         self.display = display
         self.game_state_manager = game_state_manager
         self.data = data
+        self.animal_hunt = animal_hunt
 
         self.worker_timer = Timer(True)
         self.worker_timer.start(1, 0)
@@ -109,6 +110,7 @@ class Town:
                 if event.key == pygame.K_a:
                     self.game_state_manager.set_state('Store')
                 if event.key == pygame.K_s:
+                    self.animal_hunt.start_new_game(current_time)
                     self.game_state_manager.set_state('Animal Hunt')
             for b in self.button_list:
                 b.click(event)

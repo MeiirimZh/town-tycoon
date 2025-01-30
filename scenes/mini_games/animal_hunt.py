@@ -11,7 +11,7 @@ class AnimalHunt:
         self.data = data
 
         self.timer = Timer()
-        self.timer.start(15, 0)
+        # self.timer.start(15, 0)
 
         self.positions = [(124, 39), (85, 359), (167, 618), (367, 199), (774, 132),
                           (683, 329), (583, 562), (1112, 39), (1097, 399), (956, 658)]
@@ -24,7 +24,12 @@ class AnimalHunt:
         self.reward = self.data.people // 5
         self.rounds = 0
 
+        # self.generate_animals()
+
+    def start_new_game(self, current_time):
+        self.timer.start(15, current_time)
         self.generate_animals()
+        self.rounds = 0
 
     def run(self, events):
         current_time = pygame.time.get_ticks()
