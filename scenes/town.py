@@ -18,8 +18,8 @@ class Town:
         self.worker_timer = Timer(True)
         self.worker_timer.start(1, 0)
 
-        self.food_timer = Timer(True)
-        self.food_timer.start(3, 0)
+        self.basic_resources_timer = Timer(True)
+        self.basic_resources_timer.start(3, 0)
 
         self.text_list = []
         self.button_list = []
@@ -40,6 +40,12 @@ class Town:
             self.data.stone += self.data.stone_click_value
             print(f'Stone: {self.data.stone}')
             self.log.append(Text(32, f'Stone: {self.data.stone_click_value}', (255, 255, 255), (60, 400), self.display))
+        elif resource == 'Food':
+            self.data.food = min(self.data.food_storage, self.data.food + self.data.food_click_value)
+            print(f'Food: {self.data.food}')
+        elif resource == 'Water':
+            self.data.water = min(self.data.water_storage, self.data.water + self.data.water_click_value)
+            print(f'Water: {self.data.water}')
 
         self.button_f = ""
 
@@ -57,11 +63,13 @@ class Town:
             self.data.wood += self.data.lumberjacks
             self.data.stone += self.data.miners
 
-        self.food_timer.update(current_time)
+        self.basic_resources_timer.update(current_time)
 
-        if self.food_timer.has_finished():
+        if self.basic_resources_timer.has_finished():
             self.data.food = max(0, self.data.food - self.data.people // 5)
+            self.data.water = max(0, self.data.water - self.data.people // 2)
             print(f'Food: {self.data.food}')
+            print(f'Water: {self.data.water}')
 
         for t in self.text_list:
             if "Wood" in t.msg:

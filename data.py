@@ -1,17 +1,25 @@
 class Data:
     def __init__(self):
         # Town
+        self.stability = 75
         self.people = 100
 
         # Resources
-        self.resource_types = ['Food', 'Wood', 'Stone']
+        self.resource_types = ['Food', 'Water', 'Wood', 'Stone']
         self.food = 1000
+        self.water = 2500
         self.wood = 0
         self.stone = 0
+
+        # Resources storage
+        self.food_storage = 1000
+        self.water_storage = 2500
 
         # Player stats
         self.wood_click_value = 1
         self.stone_click_value = 1
+        self.food_click_value = 5
+        self.water_click_value = 2
 
         # Workers
         self.lumberjacks = 0
