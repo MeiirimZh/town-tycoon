@@ -28,7 +28,9 @@ class Town:
         self.button_list.append(Button(30, 650, 330, 100, BUTTON_COL, BUTTON_COL_H, BUTTON_COL_P, 32, self.harvest, self.display, "Find Resources"))
         self.text_list.append(Text(64, "Prodos", (255, 255, 255), (30, 60), self.display))
         self.text_list.append(Text(24, f"W: {self.data.wood}", (255, 255, 255), (430, 730), self.display))
-        self.text_list.append(Text(24, f"S: {self.data.stone}", (255, 255, 255), (530, 730), self.display))
+        self.text_list.append(Text(24, f"S: {self.data.stone}", (255, 255, 255), (560, 730), self.display))
+        self.text_list.append(Text(24, f"F: {self.data.stone}", (255, 255, 255), (690, 730), self.display))
+        self.text_list.append(Text(24, f"H: {self.data.stone}", (255, 255, 255), (820, 730), self.display))
 
     def harvest(self):
         resource = random.choice(self.data.resource_types)
@@ -43,9 +45,11 @@ class Town:
         elif resource == 'Food':
             self.data.food = min(self.data.food_storage, self.data.food + self.data.food_click_value)
             print(f'Food: {self.data.food}')
+            self.log.append(Text(32, f'Food: {self.data.food_click_value}', (255, 255, 255), (60, 400), self.display))
         elif resource == 'Water':
             self.data.water = min(self.data.water_storage, self.data.water + self.data.water_click_value)
             print(f'Water: {self.data.water}')
+            self.log.append(Text(32, f'Water: {self.data.water_click_value}', (255, 255, 255), (60, 400), self.display))
 
         self.button_f = ""
 
@@ -72,10 +76,14 @@ class Town:
             print(f'Water: {self.data.water}')
 
         for t in self.text_list:
-            if "Wood" in t.msg:
-                t.update_msg(f"Wood: {self.data.wood}")
-            elif "Stone" in t.msg:
-                t.update_msg(f"Stone: {self.data.stone}")
+            if "W" in t.msg:
+                t.update_msg(f"W: {self.data.wood}")
+            elif "S" in t.msg:
+                t.update_msg(f"S: {self.data.stone}")
+            elif "F" in t.msg:
+                t.update_msg(f"F: {self.data.food}")
+            elif "H" in t.msg:
+                t.update_msg(f"H: {self.data.water}")
             t.draw()
 
         for b in self.button_list:
