@@ -1,5 +1,8 @@
 import pygame
 import random
+
+from collections import deque
+
 from config import *
 
 from scripts.timer import Timer
@@ -20,9 +23,23 @@ class Town:
 
         self.text_list = []
         self.button_list = []
+        self.log = deque(maxlen=4)
 
-        self.button_list.append(Button(30, 600, 330, 100, BUTTON_COL, BUTTON_COL_H, BUTTON_COL_P, 32, "harvest", self.display, "Find Resources"))
-        self.text_list.append(Text(64, "Prodos", (255, 255, 255), (60, 60), self.display))
+        self.button_list.append(Button(30, 600, 330, 100, BUTTON_COL, BUTTON_COL_H, BUTTON_COL_P, 32, self.harvest, self.display, "Find Resources"))
+        self.text_list.append(Text(64, "Prodos", (255, 255, 255), (30, 60), self.display))
+        self.text_list.append(Text(24, f"Wood: {self.data.wood}", (255, 255, 255), (30, 550), self.display))
+        self.text_list.append(Text(24, f"Stone: {self.data.stone}", (255, 255, 255), (175, 550), self.display))
+
+    def harvest(self):
+        resource = random.choice(self.data.resource_types)
+        if resource == 'Wood':
+            self.data.wood += self.data.wood_click_value
+            print(f'Wood: {self.data.wood}')
+            self.log.append(Text(32, f'Wood: {self.data.wood_click_value}', (255, 255, 255), (60, 400), self.display))
+        elif resource == 'Stone':
+            self.data.stone += self.data.stone_click_value
+            print(f'Stone: {self.data.stone}')
+            self.log.append(Text(32, f'Stone: {self.data.stone_click_value}', (255, 255, 255), (60, 400), self.display))
 
         self.button_f = ""
 
@@ -47,6 +64,10 @@ class Town:
             print(f'Food: {self.data.food}')
 
         for t in self.text_list:
+            if "Wood" in t.msg:
+                t.update_msg(f"Wood: {self.data.wood}")
+            elif "Stone" in t.msg:
+                t.update_msg(f"Stone: {self.data.stone}")
             t.draw()
 
         for b in self.button_list:
@@ -55,25 +76,12 @@ class Town:
                 self.button_f = b.click_func
             b.draw()
 
-        if self.button_f == "harvest":
-            resource = random.choice(self.data.resource_types)
-            if resource == 'Wood':
-                self.data.wood += self.data.wood_click_value
-                print(f'Wood: {self.data.wood}')
-            elif resource == 'Stone':
-                self.data.stone += self.data.stone_click_value
-                print(f'Stone: {self.data.stone}')
-            self.button_f = ""
+        for index, l in enumerate(self.log):
+            l.draw((30, 300 - (50 * index)))
 
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
                     self.game_state_manager.set_state('Store')
-                if event.key == pygame.K_SPACE:
-                    resource = random.choice(self.data.resource_types)
-                    if resource == 'Wood':
-                        self.data.wood += self.data.wood_click_value
-                        print(f'Wood: {self.data.wood}')
-                    elif resource == 'Stone':
-                        self.data.stone += self.data.stone_click_value
-                        print(f'Stone: {self.data.stone}')
+            for b in self.button_list:
+                b.click(event)
