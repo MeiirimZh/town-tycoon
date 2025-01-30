@@ -61,7 +61,7 @@ class Button:
                 self.is_pressed = True
                 if not self.was_pressed:
                     self.was_pressed = True
-                    self.click_func()
+                    return self.click_func
             else:
                 self.is_pressed = False
                 self.was_pressed = False

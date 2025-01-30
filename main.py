@@ -1,7 +1,7 @@
 import sys
 import pygame
 
-from config import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
+from config import SCREENWIDTH, SCREENHEIGHT, FPS
 from scenes.town import Town
 from scenes.store import Store
 from data import Data
@@ -11,7 +11,7 @@ class Game:
     def __init__(self):
         pygame.init()
 
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT), pygame.FULLSCREEN)
         self.clock = pygame.time.Clock()
 
         self.game_state_manager = GameStateManager('Town')
