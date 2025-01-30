@@ -1,5 +1,16 @@
 def get_quarter(x, y):
-    quarters = [x*4 for x in range(0, int(y/4) + 1)]
-    for i in range(len(quarters)-1):
-        if quarters[i] <= x <= quarters[i+1]:
-            return i+1
+    quarter_size = y / 4
+    if x == 0:
+        return 1
+    for i in range(4):
+        if i * quarter_size < x <= (i + 1) * quarter_size:
+            return i + 1
+
+
+def get_section(x, y, z):
+    section_size = y / z
+    if x == 0:
+        return 1
+    for i in range(z):
+        if i * section_size < x <= (i + 1) * section_size:
+            return i + 1

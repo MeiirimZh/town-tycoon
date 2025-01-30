@@ -8,6 +8,8 @@ from config import *
 from scripts.timer import Timer
 from scripts.textandbuttons import Text, Button
 
+from scripts.utils import get_quarter, get_section
+
 
 class Town:
     def __init__(self, display, game_state_manager, data):
@@ -36,22 +38,29 @@ class Town:
         resource = random.choice(self.data.resource_types)
         if resource == 'Wood':
             self.data.wood += self.data.wood_click_value
-            print(f'Wood: {self.data.wood}')
+            # print(f'Wood: {self.data.wood}')
             self.log.append(Text(32, f'Wood: {self.data.wood_click_value}', (255, 255, 255), (60, 400), self.display))
         elif resource == 'Stone':
             self.data.stone += self.data.stone_click_value
-            print(f'Stone: {self.data.stone}')
+            # print(f'Stone: {self.data.stone}')
             self.log.append(Text(32, f'Stone: {self.data.stone_click_value}', (255, 255, 255), (60, 400), self.display))
         elif resource == 'Food':
             self.data.food = min(self.data.food_storage, self.data.food + self.data.food_click_value)
-            print(f'Food: {self.data.food}')
+            # print(f'Food: {self.data.food}')
             self.log.append(Text(32, f'Food: {self.data.food_click_value}', (255, 255, 255), (60, 400), self.display))
         elif resource == 'Water':
             self.data.water = min(self.data.water_storage, self.data.water + self.data.water_click_value)
-            print(f'Water: {self.data.water}')
+            # print(f'Water: {self.data.water}')
             self.log.append(Text(32, f'Water: {self.data.water_click_value}', (255, 255, 255), (60, 400), self.display))
 
         self.button_f = ""
+
+    def calculate_stability(self):
+        food_scores = get_section(self.data.food, self.data.food_storage, 12)
+        water_scores = get_section(self.data.water, self.data.water_storage, 8)
+        total_scores = food_scores + water_scores
+
+        return get_quarter(total_scores, 20)
 
     def run(self, events):
         mouse_pos = pygame.mouse.get_pos()
@@ -72,8 +81,10 @@ class Town:
         if self.basic_resources_timer.has_finished():
             self.data.food = max(0, self.data.food - self.data.people // 5)
             self.data.water = max(0, self.data.water - self.data.people // 2)
-            print(f'Food: {self.data.food}')
-            print(f'Water: {self.data.water}')
+            # print(f'Food: {self.data.food}')
+            # print(f'Water: {self.data.water}')
+
+        # print(f'Stability: {self.calculate_stability()}')
 
         for t in self.text_list:
             if "W" in t.msg:
