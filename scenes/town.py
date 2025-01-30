@@ -25,10 +25,10 @@ class Town:
         self.button_list = []
         self.log = deque(maxlen=4)
 
-        self.button_list.append(Button(30, 600, 330, 100, BUTTON_COL, BUTTON_COL_H, BUTTON_COL_P, 32, self.harvest, self.display, "Find Resources"))
+        self.button_list.append(Button(30, 650, 330, 100, BUTTON_COL, BUTTON_COL_H, BUTTON_COL_P, 32, self.harvest, self.display, "Find Resources"))
         self.text_list.append(Text(64, "Prodos", (255, 255, 255), (30, 60), self.display))
-        self.text_list.append(Text(24, f"Wood: {self.data.wood}", (255, 255, 255), (30, 550), self.display))
-        self.text_list.append(Text(24, f"Stone: {self.data.stone}", (255, 255, 255), (175, 550), self.display))
+        self.text_list.append(Text(24, f"W: {self.data.wood}", (255, 255, 255), (430, 730), self.display))
+        self.text_list.append(Text(24, f"S: {self.data.stone}", (255, 255, 255), (530, 730), self.display))
 
     def harvest(self):
         resource = random.choice(self.data.resource_types)
@@ -45,11 +45,11 @@ class Town:
 
     def run(self, events):
         mouse_pos = pygame.mouse.get_pos()
-        mouse_pressed = pygame.mouse.get_pressed()
-
         current_time = pygame.time.get_ticks()
 
         self.display.fill('blue')
+        pygame.draw.rect(self.display, (50, 5, 0), (0, 710, 1366, 768))
+        pygame.draw.rect(self.display, (74, 10, 0), (0, 0, 400, 768))
 
         self.worker_timer.update(current_time)
 
@@ -72,8 +72,6 @@ class Town:
 
         for b in self.button_list:
             b.check_inp(mouse_pos)
-            if b.click(mouse_pos, mouse_pressed):
-                self.button_f = b.click_func
             b.draw()
 
         for index, l in enumerate(self.log):
