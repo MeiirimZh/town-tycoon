@@ -10,19 +10,28 @@ class Town:
         self.game_state_manager = game_state_manager
         self.data = data
 
-        self.timer = Timer(True)
-        self.timer.start(1, 0)
+        self.worker_timer = Timer(True)
+        self.worker_timer.start(1, 0)
+
+        self.food_timer = Timer(True)
+        self.food_timer.start(3, 0)
 
     def run(self, events):
         current_time = pygame.time.get_ticks()
 
         self.display.fill('blue')
 
-        self.timer.update(current_time)
+        self.worker_timer.update(current_time)
 
-        if self.timer.has_finished():
-            self.data.wood += 1
-            print(self.data.wood)
+        if self.worker_timer.has_finished():
+            self.data.wood += self.data.lumberjacks
+            self.data.stone += self.data.miners
+
+        self.food_timer.update(current_time)
+
+        if self.food_timer.has_finished():
+            self.data.food = max(0, self.data.food - self.data.people // 5)
+            print(f'Food: {self.data.food}')
 
         for event in events:
             if event.type == pygame.KEYDOWN:

@@ -23,6 +23,8 @@ class Store:
                 if event.key == pygame.K_v:
                     print(f'Upgrade wood click value: {self.data.upgrade_wood_click_value_cost}')
                     print(f'Upgrade stone click value: {self.data.upgrade_stone_click_value_cost}')
+                    print(f'Hire lumberjack: {self.data.hire_lumberjack_cost}')
+                    print(f'Hire miner: {self.data.hire_miner_cost}')
                 if event.key == pygame.K_q:
                     if self.data.wood >= self.data.upgrade_wood_click_value_cost:
                         self.data.wood_click_value = self.data.wood_click_value * 2 + 1
@@ -33,3 +35,11 @@ class Store:
                         self.data.stone_click_value = self.data.stone_click_value * 2 + 1
                         self.data.stone -= self.data.upgrade_stone_click_value_cost
                         self.data.upgrade_stone_click_value_cost = self.data.upgrade_stone_click_value_cost * 2 + 100
+                if event.key == pygame.K_e:
+                    if self.data.wood >= self.data.hire_lumberjack_cost:
+                        self.data.lumberjacks += 1
+                        self.data.wood -= self.data.hire_lumberjack_cost
+                if event.key == pygame.K_r:
+                    if self.data.stone >= self.data.hire_miner_cost:
+                        self.data.miners += 1
+                        self.data.stone -= self.data.hire_miner_cost
