@@ -1,8 +1,11 @@
 import pygame
 import random
 
+from config import SCREENWIDTH, SCREENHEIGHT
 from scripts.timer import Timer
 from scripts.textandbuttons import Text, Button
+from scripts.darken_background import DarkenBG
+from scripts.mini_game_result_window import MiniGameResultWindow
 
 
 class AnimalHunt:
@@ -28,6 +31,10 @@ class AnimalHunt:
         self.text_list = [Text(24, 'Meat: 0', (255, 255, 255), (30, 30), self.display),
                           Text(24, 'Round: 1', (255, 255, 255), (30, 60), self.display)]
 
+        self.darken_bg = DarkenBG(0, 0, SCREENWIDTH, SCREENHEIGHT, (0, 0, 0), (0, 0), (SCREENWIDTH, SCREENHEIGHT), 128)
+
+        self.result_window = MiniGameResultWindow(513, 142, 340, 484, self.display)
+
         self.game_finished = False
 
     def start_new_game(self, current_time):
@@ -51,12 +58,16 @@ class AnimalHunt:
         self.timer.update(current_time)
 
         if self.timer.has_finished():
+            self.darken_bg.draw(self.display)
+
+            self.result_window.draw()
+
             self.game_finished = True
 
-            self.game_state_manager.set_state('Town')
-
-        for animal in self.animals:
-            pygame.draw.rect(self.display, (255, 255, 255), animal)
+            #self.game_state_manager.set_state('Town')
+        else:
+            for animal in self.animals:
+                pygame.draw.rect(self.display, (255, 255, 255), animal)
 
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
