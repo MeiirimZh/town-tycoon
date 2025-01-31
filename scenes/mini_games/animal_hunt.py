@@ -2,6 +2,7 @@ import pygame
 import random
 
 from scripts.timer import Timer
+from scripts.textandbuttons import Text, Button
 
 
 class AnimalHunt:
@@ -11,9 +12,8 @@ class AnimalHunt:
         self.data = data
 
         self.timer = Timer()
-        # self.timer.start(15, 0)
 
-        self.positions = [(124, 39), (85, 359), (167, 618), (367, 199), (774, 132),
+        self.positions = [(47, 144), (85, 359), (167, 618), (367, 199), (774, 132),
                           (683, 329), (583, 562), (1112, 39), (1097, 399), (956, 658)]
 
         self.animal_width = 200
@@ -23,18 +23,30 @@ class AnimalHunt:
 
         self.reward = self.data.people // 5
         self.rounds = 0
+        self.meat = 0
+
+        self.text_list = [Text(24, 'Meat: 0', (255, 255, 255), (30, 30), self.display),
+                          Text(24, 'Round: 1', (255, 255, 255), (30, 60), self.display)]
 
         self.game_finished = False
 
     def start_new_game(self, current_time):
-        self.timer.start(15, current_time)
+        self.timer.start(20, current_time)
         self.generate_animals()
+        self.meat = 0
         self.rounds = 0
 
     def run(self, events):
         current_time = pygame.time.get_ticks()
 
         self.display.fill('green')
+
+        for t in self.text_list:
+            t.draw()
+            if 'Meat' in t.msg:
+                t.update_msg(f'Meat: {self.meat}')
+            elif 'Round' in t.msg:
+                t.update_msg(f'Round: {self.rounds + 1}')
 
         self.timer.update(current_time)
 
@@ -54,8 +66,11 @@ class AnimalHunt:
                         self.animals.remove(animal)
 
         if len(self.animals) == 0:
-            self.data.food += self.reward
-            print(self.data.food)
+            result = random.randint(self.reward - 10, self.reward + 10)
+
+            self.meat += result
+            self.data.food += result
+
             self.rounds += 1
             self.generate_animals()
 

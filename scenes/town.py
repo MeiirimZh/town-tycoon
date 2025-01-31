@@ -25,7 +25,7 @@ class Town:
         self.basic_resources_timer.start(3, 0)
 
         self.animal_hunt_cooldown_timer = Timer()
-        self.animal_hunt_cooldown_timer.start(30, 0)
+        self.animal_hunt_cooldown_timer.start(ANIMAL_HUNT_COOLDOWN_TIME, 0)
 
         self.animal_hunt_active = False
 
@@ -98,7 +98,7 @@ class Town:
             self.animal_hunt_active = True
 
         if self.animal_hunt.game_finished:
-            self.animal_hunt_cooldown_timer.start(30, current_time)
+            self.animal_hunt_cooldown_timer.start(ANIMAL_HUNT_COOLDOWN_TIME, current_time)
             self.animal_hunt_active = False
             self.animal_hunt.game_finished = False
 
