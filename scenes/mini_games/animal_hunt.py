@@ -24,7 +24,7 @@ class AnimalHunt:
         self.reward = self.data.people // 5
         self.rounds = 0
 
-        # self.generate_animals()
+        self.game_finished = False
 
     def start_new_game(self, current_time):
         self.timer.start(15, current_time)
@@ -39,6 +39,8 @@ class AnimalHunt:
         self.timer.update(current_time)
 
         if self.timer.has_finished():
+            self.game_finished = True
+
             self.game_state_manager.set_state('Town')
 
         for animal in self.animals:

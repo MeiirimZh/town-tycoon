@@ -24,6 +24,11 @@ class Town:
         self.basic_resources_timer = Timer(True)
         self.basic_resources_timer.start(3, 0)
 
+        self.animal_hunt_cooldown_timer = Timer()
+        self.animal_hunt_cooldown_timer.start(30, 0)
+
+        self.animal_hunt_active = False
+
         self.text_list = []
         self.button_list = []
         self.log = deque(maxlen=4)
@@ -87,6 +92,16 @@ class Town:
 
         # print(f'Stability: {self.calculate_stability()}')
 
+        self.animal_hunt_cooldown_timer.update(current_time)
+
+        if self.animal_hunt_cooldown_timer.has_finished():
+            self.animal_hunt_active = True
+
+        if self.animal_hunt.game_finished:
+            self.animal_hunt_cooldown_timer.start(30, current_time)
+            self.animal_hunt_active = False
+            self.animal_hunt.game_finished = False
+
         for t in self.text_list:
             if "W" in t.msg:
                 t.update_msg(f"W: {self.data.wood}")
@@ -110,7 +125,8 @@ class Town:
                 if event.key == pygame.K_a:
                     self.game_state_manager.set_state('Store')
                 if event.key == pygame.K_s:
-                    self.animal_hunt.start_new_game(current_time)
-                    self.game_state_manager.set_state('Animal Hunt')
+                    if self.animal_hunt_active:
+                        self.animal_hunt.start_new_game(current_time)
+                        self.game_state_manager.set_state('Animal Hunt')
             for b in self.button_list:
                 b.click(event)
