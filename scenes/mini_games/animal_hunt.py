@@ -33,7 +33,7 @@ class AnimalHunt:
 
         self.darken_bg = DarkenBG(0, 0, SCREENWIDTH, SCREENHEIGHT, (0, 0, 0), (0, 0), (SCREENWIDTH, SCREENHEIGHT), 128)
 
-        self.result_window = MiniGameResultWindow(513, 142, 340, 484, self.display)
+        self.result_window = MiniGameResultWindow(513, 199, 340, 260, self.display, self.game_state_manager)
 
         self.game_finished = False
 
@@ -60,11 +60,10 @@ class AnimalHunt:
         if self.timer.has_finished():
             self.darken_bg.draw(self.display)
 
-            self.result_window.draw()
+            self.result_window.set_results('MEAT', self.meat, 'ROUNDS', self.rounds)
+            self.result_window.draw(events)
 
             self.game_finished = True
-
-            #self.game_state_manager.set_state('Town')
         else:
             for animal in self.animals:
                 pygame.draw.rect(self.display, (255, 255, 255), animal)
