@@ -42,6 +42,9 @@ class AnimalHunt:
         self.game_finished = False
 
     def start_new_game(self, current_time):
+        pygame.mixer.music.load('music/mini_games/Animal Hunt theme.mp3')
+        pygame.mixer.music.play(-1)
+
         self.timer.start(20, current_time)
         self.generate_animals()
         self.meat = 0
