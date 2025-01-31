@@ -1,7 +1,7 @@
 import pygame
 import random
 
-from config import SCREENWIDTH, SCREENHEIGHT
+from config import SCREENWIDTH, SCREENHEIGHT, images
 from scripts.timer import Timer
 from scripts.textandbuttons import Text, Button
 from scripts.darken_background import DarkenBG
@@ -35,6 +35,10 @@ class AnimalHunt:
 
         self.result_window = MiniGameResultWindow(513, 199, 340, 260, self.display, self.game_state_manager)
 
+        self.crosshair = images['crosshair']
+        self.crosshair_width = images['crosshair'].get_width()
+        self.crosshair_height = images['crosshair'].get_height()
+
         self.game_finished = False
 
     def start_new_game(self, current_time):
@@ -44,6 +48,8 @@ class AnimalHunt:
         self.rounds = 0
 
     def run(self, events):
+        mouse_pos = pygame.mouse.get_pos()
+
         current_time = pygame.time.get_ticks()
 
         self.display.fill('green')
@@ -64,9 +70,13 @@ class AnimalHunt:
             self.result_window.draw(events)
 
             self.game_finished = True
+
+            pygame.mouse.set_visible(True)
         else:
             for animal in self.animals:
                 pygame.draw.rect(self.display, (255, 255, 255), animal)
+            pygame.mouse.set_visible(False)
+            self.display.blit(self.crosshair, (mouse_pos[0]-self.crosshair_width/2, mouse_pos[1]-self.crosshair_height/2))
 
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
