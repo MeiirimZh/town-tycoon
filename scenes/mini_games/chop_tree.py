@@ -5,6 +5,7 @@ from config import SCREENWIDTH, SCREENHEIGHT
 from scripts.timer import Timer
 from scripts.textandbuttons import Text
 from scripts.darken_background import DarkenBG
+from scripts.mini_game_result_window import MiniGameResultWindow
 
 
 class ChopTree:
@@ -27,7 +28,7 @@ class ChopTree:
 
         self.direction = 1
 
-        self.reward = 40
+        self.reward = self.data.wood_click_value
         self.chops = 0
         self.wood = 0
 
@@ -36,7 +37,14 @@ class ChopTree:
 
         self.darken_bg = DarkenBG(0, 0, SCREENWIDTH, SCREENHEIGHT, (0, 0, 0), (0, 0), (SCREENWIDTH, SCREENHEIGHT), 128)
 
+        self.result_window = MiniGameResultWindow(513, 199, 340, 260, self.display, self.game_state_manager)
+
+        self.game_finished = False
+
     def start_new_game(self, current_time):
+        pygame.mixer.music.load('music/mini_games/Chop Tree theme.mp3')
+        pygame.mixer.music.play(-1)
+
         self.timer.start(40, current_time)
         self.generate_target()
         self.wood = 0
@@ -48,10 +56,21 @@ class ChopTree:
         self.display.fill('green')
 
         self.timer.update(current_time)
-        print(self.timer.time_left())
+
+        for t in self.text_list:
+            t.draw()
+            if 'Wood' in t.msg:
+                t.update_msg(f'Wood: {self.wood}')
+            elif 'Chops' in t.msg:
+                t.update_msg(f'Chops: {self.chops}')
 
         if self.timer.has_finished():
             self.darken_bg.draw(self.display)
+
+            self.result_window.set_results('WOOD', self.wood, 'CHOPS', self.chops)
+            self.result_window.draw(events)
+
+            self.game_finished = True
         else:
             pygame.draw.rect(self.display, (255, 255, 255), self.axe)
 
@@ -68,18 +87,11 @@ class ChopTree:
 
             pygame.draw.rect(self.display, (255, 255, 0), self.target)
 
-        for t in self.text_list:
-            t.draw()
-            if 'Wood' in t.msg:
-                t.update_msg(f'Wood: {self.wood}')
-            elif 'Chops' in t.msg:
-                t.update_msg(f'Chops: {self.chops}')
-
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if self.target.colliderect(self.detect_rect):
-                        result = random.randint(self.reward - 10, self.reward + 10)
+                        result = random.randint(self.reward, self.reward * 5)
 
                         self.wood += result
                         self.data.wood += result

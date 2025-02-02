@@ -11,5 +11,6 @@ BUTTON_COL_H = (200, 200, 200)
 BUTTON_COL_P = (100, 100, 100)
 
 ANIMAL_HUNT_COOLDOWN_TIME = 30
+CHOP_TREE_COOLDOWN_TIME = 20
 
 images = {'crosshair': pygame.image.load('images/crosshair.png')}

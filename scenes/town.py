@@ -28,7 +28,11 @@ class Town:
         self.animal_hunt_cooldown_timer = Timer()
         self.animal_hunt_cooldown_timer.start(ANIMAL_HUNT_COOLDOWN_TIME, 0)
 
+        self.chop_tree_cooldown_timer = Timer()
+        self.chop_tree_cooldown_timer.start(CHOP_TREE_COOLDOWN_TIME, 0)
+
         self.animal_hunt_active = False
+        self.chop_tree_active = False
 
         self.text_list = []
         self.button_list = []
@@ -103,6 +107,16 @@ class Town:
             self.animal_hunt_active = False
             self.animal_hunt.game_finished = False
 
+        self.chop_tree_cooldown_timer.update(current_time)
+
+        if self.chop_tree_cooldown_timer.has_finished():
+            self.chop_tree_active = True
+
+        if self.chop_tree.game_finished:
+            self.chop_tree_cooldown_timer.start(CHOP_TREE_COOLDOWN_TIME, current_time)
+            self.chop_tree_active = False
+            self.chop_tree.game_finished = False
+
         for t in self.text_list:
             if "W" in t.msg:
                 t.update_msg(f"W: {self.data.wood}")
@@ -130,7 +144,8 @@ class Town:
                         self.animal_hunt.start_new_game(current_time)
                         self.game_state_manager.set_state('Animal Hunt')
                 if event.key == pygame.K_d:
-                    self.chop_tree.start_new_game(current_time)
-                    self.game_state_manager.set_state('Chop Tree')
+                    if self.chop_tree_active:
+                        self.chop_tree.start_new_game(current_time)
+                        self.game_state_manager.set_state('Chop Tree')
             for b in self.button_list:
                 b.click(event)
