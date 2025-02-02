@@ -1,6 +1,8 @@
 import pygame
 import random
 
+from scripts.textandbuttons import Text
+
 
 class ChopTree:
     def __init__(self, display, game_state_manager, data):
@@ -20,6 +22,13 @@ class ChopTree:
 
         self.direction = 1
 
+        self.reward = 40
+        self.chops = 0
+        self.wood = 0
+
+        self.text_list = [Text(24, 'Wood: 0', (255, 255, 255), (30, 30), self.display),
+                          Text(24, 'Chops: 0', (255, 255, 255), (30, 60), self.display)]
+
     def start_new_game(self):
         self.generate_target()
 
@@ -27,6 +36,13 @@ class ChopTree:
         self.display.fill('green')
 
         pygame.draw.rect(self.display, (255, 255, 255), self.axe)
+
+        for t in self.text_list:
+            t.draw()
+            if 'Wood' in t.msg:
+                t.update_msg(f'Wood: {self.wood}')
+            elif 'Chops' in t.msg:
+                t.update_msg(f'Chops: {self.chops}')
 
         if self.axe.y == 109:
             self.direction = 1
@@ -45,6 +61,12 @@ class ChopTree:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if self.target.colliderect(self.detect_rect):
+                        result = random.randint(self.reward - 10, self.reward + 10)
+
+                        self.wood += result
+                        self.data.wood += result
+
+                        self.chops += 1
                         self.generate_target()
 
     def generate_target(self):
