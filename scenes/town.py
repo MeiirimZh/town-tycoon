@@ -130,7 +130,7 @@ class Town:
                         self.animal_hunt.start_new_game(current_time)
                         self.game_state_manager.set_state('Animal Hunt')
                 if event.key == pygame.K_d:
-                    self.chop_tree.start_new_game()
+                    self.chop_tree.start_new_game(current_time)
                     self.game_state_manager.set_state('Chop Tree')
             for b in self.button_list:
                 b.click(event)

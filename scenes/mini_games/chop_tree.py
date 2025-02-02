@@ -1,7 +1,10 @@
 import pygame
 import random
 
+from config import SCREENWIDTH, SCREENHEIGHT
+from scripts.timer import Timer
 from scripts.textandbuttons import Text
+from scripts.darken_background import DarkenBG
 
 
 class ChopTree:
@@ -9,6 +12,8 @@ class ChopTree:
         self.display = display
         self.game_state_manager = game_state_manager
         self.data = data
+
+        self.timer = Timer()
 
         self.parts = [pygame.Rect(583, 109, 100, 50)]
         self.target = None
@@ -29,13 +34,39 @@ class ChopTree:
         self.text_list = [Text(24, 'Wood: 0', (255, 255, 255), (30, 30), self.display),
                           Text(24, 'Chops: 0', (255, 255, 255), (30, 60), self.display)]
 
-    def start_new_game(self):
+        self.darken_bg = DarkenBG(0, 0, SCREENWIDTH, SCREENHEIGHT, (0, 0, 0), (0, 0), (SCREENWIDTH, SCREENHEIGHT), 128)
+
+    def start_new_game(self, current_time):
+        self.timer.start(40, current_time)
         self.generate_target()
+        self.wood = 0
+        self.chops = 0
 
     def run(self, events):
+        current_time = pygame.time.get_ticks()
+
         self.display.fill('green')
 
-        pygame.draw.rect(self.display, (255, 255, 255), self.axe)
+        self.timer.update(current_time)
+        print(self.timer.time_left())
+
+        if self.timer.has_finished():
+            self.darken_bg.draw(self.display)
+        else:
+            pygame.draw.rect(self.display, (255, 255, 255), self.axe)
+
+            if self.axe.y == 109:
+                self.direction = 1
+            elif self.axe.y == 559:
+                self.direction = -1
+
+            self.axe.y += 5 * self.direction
+            self.detect_rect.y = self.axe.y
+
+            for part in self.parts:
+                pygame.draw.rect(self.display, (125, 28, 28), part)
+
+            pygame.draw.rect(self.display, (255, 255, 0), self.target)
 
         for t in self.text_list:
             t.draw()
@@ -43,19 +74,6 @@ class ChopTree:
                 t.update_msg(f'Wood: {self.wood}')
             elif 'Chops' in t.msg:
                 t.update_msg(f'Chops: {self.chops}')
-
-        if self.axe.y == 109:
-            self.direction = 1
-        elif self.axe.y == 559:
-            self.direction = -1
-
-        self.axe.y += 5 * self.direction
-        self.detect_rect.y = self.axe.y
-
-        for part in self.parts:
-            pygame.draw.rect(self.display, (125, 28, 28), part)
-
-        pygame.draw.rect(self.display, (255, 255, 0), self.target)
 
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
