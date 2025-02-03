@@ -1,7 +1,7 @@
 import pygame
 import random
 
-from config import SCREENWIDTH, SCREENHEIGHT
+from config import SCREENWIDTH, SCREENHEIGHT, images
 from scripts.timer import Timer
 from scripts.textandbuttons import Text
 from scripts.darken_background import DarkenBG
@@ -22,7 +22,7 @@ class ChopTree:
         for i in range(9):
             self.parts.append(pygame.Rect(583, self.parts[-1].y+50, 100, 50))
 
-        self.axe = pygame.Rect(790, 109, 200, 50)
+        self.axe = images['axe']
         self.detect_rect = pygame.Rect(583, 109, 100, 50)
         self.axe_pos = 109
 
@@ -72,15 +72,15 @@ class ChopTree:
 
             self.game_finished = True
         else:
-            pygame.draw.rect(self.display, (255, 255, 255), self.axe)
+            self.display.blit(self.axe, (790, self.axe_pos))
 
-            if self.axe.y == 109:
+            if self.axe_pos == 109:
                 self.direction = 1
-            elif self.axe.y == 559:
+            elif self.axe_pos == 559:
                 self.direction = -1
 
-            self.axe.y += 5 * self.direction
-            self.detect_rect.y = self.axe.y
+            self.axe_pos += 5 * self.direction
+            self.detect_rect.y = self.axe_pos
 
             for part in self.parts:
                 pygame.draw.rect(self.display, (125, 28, 28), part)

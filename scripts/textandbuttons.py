@@ -22,12 +22,19 @@ class Text:
     def update_msg(self, new_msg):
         self.msg = new_msg
 
+    def update_pos(self, new_pos):
+        self.position = new_pos
+
 
 class Button:
     def __init__(self, x, y, width, height, color, hover_col, pressed_col, font_size, click_func, display,
                  text="", font_path=MONOCRAFT_FONT) -> None:
         pygame.font.init()
 
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
         self.rect = pygame.Rect(x, y, width, height)
         self.color = color
         self.hover_col = hover_col
@@ -67,3 +74,8 @@ class Button:
                 
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             self.is_pressed = False
+
+    def update_pos(self, new_pos):
+        self.x = new_pos[0]
+        self.y = new_pos[1]
+        self.rect.topleft = new_pos

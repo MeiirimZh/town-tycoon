@@ -1,3 +1,8 @@
+import pygame.font
+
+from config import MONOCRAFT_FONT
+
+
 def get_quarter(x, y):
     quarter_size = y / 4
     if x == 0:
@@ -14,3 +19,7 @@ def get_section(x, y, z):
     for i in range(z):
         if i * section_size < x <= (i + 1) * section_size:
             return i + 1
+
+
+def create_font(size):
+    return pygame.font.Font(MONOCRAFT_FONT, size)
