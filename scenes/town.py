@@ -21,7 +21,7 @@ class Town:
         self.animal_hunt = animal_hunt
         self.chop_tree = chop_tree
 
-        self.simulation = Simulation(392, 0, 974, 588)
+        self.simulation = Simulation(392, 0, 974, 588, self.display)
 
         self.can_harvest = False
         self.btn_cooldown = Timer(True)
@@ -166,7 +166,8 @@ class Town:
 
         self.progressbar.draw()
 
-        self.simulation.render(self.display)
+        self.simulation.update(events)
+        self.simulation.render()
 
         for event in events:
             if event.type == pygame.KEYDOWN:
