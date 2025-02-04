@@ -12,11 +12,17 @@ class Store:
         self.data = data
 
         self.title = Text(32, 'STORE', (255, 255, 255), (631, 20), self.display)
-        self.upgrade_buttons = [Button(40, 200, 100, 30, BUTTON_COL, BUTTON_COL_H, BUTTON_COL_P, 16, lambda: print('hello'),
-                                       self.display, "UPGRADE")]
-        self.upgrade_text = [Text(20, '25 wood: +1 wood per click', (255, 255, 255), (40, 200), self.display)]
+
+        self.upgrade_buttons = [Button(40, 200, 100, 30, BUTTON_COL, BUTTON_COL_H,
+                                BUTTON_COL_P, 16, lambda: self.upgrade_wood_click_value(), self.display, "UPGRADE"),
+                                Button(40, 200, 100, 30, BUTTON_COL, BUTTON_COL_H,
+                                BUTTON_COL_P, 16, lambda: self.upgrade_stone_click_value(), self.display, "UPGRADE")]
+
+        self.upgrade_text = [Text(20, '50 wood: +1 wood per click', (255, 255, 255), (40, 200), self.display),
+                             Text(20, '100 stone: +1 stone per click', (255, 255, 255), (40, 250), self.display)]
 
         self.upgrade_wood_layout = HLayout([self.upgrade_text[0], self.upgrade_buttons[0]], self.display)
+        self.upgrade_stone_layout = HLayout([self.upgrade_text[1], self.upgrade_buttons[1]], self.display)
 
     def run(self, events):
         mouse_pos = pygame.mouse.get_pos()
@@ -28,7 +34,14 @@ class Store:
         for button in self.upgrade_buttons:
             button.check_inp(mouse_pos)
 
+        for text in self.upgrade_text:
+            if 'wood' in text.msg:
+                text.update_msg(f'{self.data.upgrade_wood_click_value_cost} wood: +{self.data.wood_click_value} wood per click')
+            if 'stone' in text.msg:
+                text.update_msg(f'{self.data.upgrade_stone_click_value_cost} stone: +{self.data.stone_click_value} stone per click')
+
         self.upgrade_wood_layout.draw(30)
+        self.upgrade_stone_layout.draw(30)
 
         for event in events:
             for button in self.upgrade_buttons:
@@ -47,13 +60,6 @@ class Store:
                     print(f'Upgrade stone click value: {self.data.upgrade_stone_click_value_cost}')
                     print(f'Hire lumberjack: {self.data.hire_lumberjack_cost}')
                     print(f'Hire miner: {self.data.hire_miner_cost}')
-                if event.key == pygame.K_q:
-                    pass
-                if event.key == pygame.K_w:
-                    if self.data.stone >= self.data.upgrade_stone_click_value_cost:
-                        self.data.stone_click_value = self.data.stone_click_value * 2 + 1
-                        self.data.stone -= self.data.upgrade_stone_click_value_cost
-                        self.data.upgrade_stone_click_value_cost = self.data.upgrade_stone_click_value_cost * 2 + 100
                 if event.key == pygame.K_e:
                     if self.data.wood >= self.data.hire_lumberjack_cost:
                         self.data.lumberjacks += 1
@@ -68,3 +74,9 @@ class Store:
             self.data.wood_click_value = self.data.wood_click_value * 2 + 1
             self.data.wood -= self.data.upgrade_wood_click_value_cost
             self.data.upgrade_wood_click_value_cost = self.data.upgrade_wood_click_value_cost * 2 + 100
+
+    def upgrade_stone_click_value(self):
+        if self.data.stone >= self.data.upgrade_stone_click_value_cost:
+            self.data.stone_click_value = self.data.stone_click_value * 2 + 1
+            self.data.stone -= self.data.upgrade_stone_click_value_cost
+            self.data.upgrade_stone_click_value_cost = self.data.upgrade_stone_click_value_cost * 2 + 100

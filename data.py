@@ -27,7 +27,7 @@ class Data:
 
         # Upgrade costs
         self.upgrade_wood_click_value_cost = 50
-        self.upgrade_stone_click_value_cost = 50
+        self.upgrade_stone_click_value_cost = 100
 
         # Hire costs
         self.hire_lumberjack_cost = 300
