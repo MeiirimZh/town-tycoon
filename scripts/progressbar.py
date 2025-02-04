@@ -12,7 +12,12 @@ class Progressbar:
 
     def draw(self):
         pygame.draw.rect(self.display, (0, 0, 0), (self.coords[0], self.coords[1], self.length, 5))
-        pygame.draw.rect(self.display, (0, 255, 0), (self.coords[0], self.coords[1], self.current_length, 5))
+
+        progress = self.current_length / self.length
+        red = int(255 * (1 - progress))
+        green = int(255 * progress)
+
+        pygame.draw.rect(self.display, (red, green, 0), (self.coords[0], self.coords[1], self.current_length, 5))
 
         if self.loop:
             if self.current_length >= self.length:
