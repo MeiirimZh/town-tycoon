@@ -7,8 +7,8 @@ from config import *
 
 from scripts.timer import Timer
 from scripts.textandbuttons import Text, Button
-
 from scripts.utils import get_quarter, get_section
+from scripts.progressbar import Progressbar
 
 from scenes.simulation.simulation import Simulation
 
@@ -22,6 +22,10 @@ class Town:
         self.chop_tree = chop_tree
 
         self.simulation = Simulation(392, 0, 974, 588)
+
+        self.can_harvest = False
+        self.btn_cooldown = Timer(True)
+        self.btn_cooldown.start(1, 0)
 
         self.worker_timer = Timer(True)
         self.worker_timer.start(1, 0)
@@ -43,32 +47,42 @@ class Town:
         self.log = deque(maxlen=4)
 
         self.button_list.append(Button(30, 650, 330, 100, BUTTON_COL, BUTTON_COL_H, BUTTON_COL_P, 32, self.harvest, self.display, "Find Resources"))
-        self.text_list.append(Text(64, "Prodos", (255, 255, 255), (30, 60), self.display))
-        self.text_list.append(Text(24, f"W: {self.data.wood}", (255, 255, 255), (430, 730), self.display))
-        self.text_list.append(Text(24, f"S: {self.data.stone}", (255, 255, 255), (560, 730), self.display))
-        self.text_list.append(Text(24, f"F: {self.data.stone}", (255, 255, 255), (690, 730), self.display))
-        self.text_list.append(Text(24, f"H: {self.data.stone}", (255, 255, 255), (820, 730), self.display))
+        self.text_list.append(Text(64, "Prodos", (255, 255, 255), (65, 60), self.display))
+        self.text_list.append(Text(24, f":{self.data.wood}", (255, 255, 255), (460, 640), self.display))
+        self.text_list.append(Text(24, f":{self.data.stone}", (255, 255, 255), (610, 640), self.display))
+        self.text_list.append(Text(24, f":{self.data.food}", (255, 255, 255), (460, 690), self.display))
+        self.text_list.append(Text(24, f":{self.data.water}", (255, 255, 255), (610, 690), self.display))
+
+        self.progressbar = Progressbar(self.display, (30, 645), 1, 330, False)
+
+        self.main_menu = images['gui_main_menu'].convert_alpha()
+        self.resources_panel = images['gui_resources_panel'].convert_alpha()
+        self.gui_water = pygame.transform.scale(images['water_icon'].convert_alpha(), (50, 50))
+        self.gui_food = pygame.transform.scale(images['food_icon'].convert_alpha(), (50, 50))
+        self.gui_wood = pygame.transform.scale(images['wood_icon'].convert_alpha(), (50, 50))
+        self.gui_stone = pygame.transform.scale(images['stone_icon'].convert_alpha(), (50, 50))
 
     def harvest(self):
-        resource = random.choice(self.data.resource_types)
-        if resource == 'Wood':
-            self.data.wood += self.data.wood_click_value
-            # print(f'Wood: {self.data.wood}')
-            self.log.append(Text(32, f'Wood: {self.data.wood_click_value}', (255, 255, 255), (60, 400), self.display))
-        elif resource == 'Stone':
-            self.data.stone += self.data.stone_click_value
-            # print(f'Stone: {self.data.stone}')
-            self.log.append(Text(32, f'Stone: {self.data.stone_click_value}', (255, 255, 255), (60, 400), self.display))
-        elif resource == 'Food':
-            self.data.food = min(self.data.food_storage, self.data.food + self.data.food_click_value)
-            # print(f'Food: {self.data.food}')
-            self.log.append(Text(32, f'Food: {self.data.food_click_value}', (255, 255, 255), (60, 400), self.display))
-        elif resource == 'Water':
-            self.data.water = min(self.data.water_storage, self.data.water + self.data.water_click_value)
-            # print(f'Water: {self.data.water}')
-            self.log.append(Text(32, f'Water: {self.data.water_click_value}', (255, 255, 255), (60, 400), self.display))
-
-        self.button_f = ""
+        if self.can_harvest:
+            resource = random.choice(self.data.resource_types)
+            if resource == 'Wood':
+                self.data.wood += self.data.wood_click_value
+                # print(f'Wood: {self.data.wood}')
+                self.log.append(Text(32, f'Wood: {self.data.wood_click_value}', (255, 255, 255), (60, 400), self.display))
+            elif resource == 'Stone':
+                self.data.stone += self.data.stone_click_value
+                # print(f'Stone: {self.data.stone}')
+                self.log.append(Text(32, f'Stone: {self.data.stone_click_value}', (255, 255, 255), (60, 400), self.display))
+            elif resource == 'Food':
+                self.data.food = min(self.data.food_storage, self.data.food + self.data.food_click_value)
+                # print(f'Food: {self.data.food}')
+                self.log.append(Text(32, f'Food: {self.data.food_click_value}', (255, 255, 255), (60, 400), self.display))
+            elif resource == 'Water':
+                self.data.water = min(self.data.water_storage, self.data.water + self.data.water_click_value)
+                # print(f'Water: {self.data.water}')
+                self.log.append(Text(32, f'Water: {self.data.water_click_value}', (255, 255, 255), (60, 400), self.display))
+            self.can_harvest = False
+            self.progressbar.reset()
 
     def calculate_stability(self):
         food_scores = get_section(self.data.food, self.data.food_storage, 12)
@@ -81,9 +95,19 @@ class Town:
         mouse_pos = pygame.mouse.get_pos()
         current_time = pygame.time.get_ticks()
 
+        self.btn_cooldown.update(current_time)
+
+        if self.btn_cooldown.has_finished():
+            self.can_harvest = True
+
         self.display.fill('blue')
-        pygame.draw.rect(self.display, (50, 5, 0), (0, 710, 1366, 768))
-        pygame.draw.rect(self.display, (74, 10, 0), (0, 0, 400, 768))
+        self.display.blit(self.resources_panel, (0, 588))
+        self.display.blit(self.main_menu, (0, 0))
+        self.display.blit(self.gui_wood, (410, 620))
+        self.display.blit(self.gui_stone, (560, 620))
+        self.display.blit(self.gui_food, (410, 680))
+        self.display.blit(self.gui_water, (560, 680))
+
 
         self.worker_timer.update(current_time)
 
@@ -138,7 +162,9 @@ class Town:
             b.draw()
 
         for index, l in enumerate(self.log):
-            l.draw((30, 300 - (50 * index)))
+            l.draw((100, 365 - (50 * index)))
+
+        self.progressbar.draw()
 
         self.simulation.render(self.display)
 
