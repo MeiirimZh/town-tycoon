@@ -10,6 +10,8 @@ from scripts.textandbuttons import Text, Button
 
 from scripts.utils import get_quarter, get_section
 
+from scenes.simulation.simulation import Simulation
+
 
 class Town:
     def __init__(self, display, game_state_manager, data, animal_hunt, chop_tree):
@@ -18,6 +20,8 @@ class Town:
         self.data = data
         self.animal_hunt = animal_hunt
         self.chop_tree = chop_tree
+
+        self.simulation = Simulation(392, 0, 974, 588)
 
         self.worker_timer = Timer(True)
         self.worker_timer.start(1, 0)
@@ -135,6 +139,8 @@ class Town:
 
         for index, l in enumerate(self.log):
             l.draw((30, 300 - (50 * index)))
+
+        self.simulation.render(self.display)
 
         for event in events:
             if event.type == pygame.KEYDOWN:
