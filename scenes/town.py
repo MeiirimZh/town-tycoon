@@ -23,7 +23,7 @@ class Town:
         self.worker_timer.start(1, 0)
 
         self.basic_resources_timer = Timer(True)
-        self.basic_resources_timer.start(3, 0)
+        self.basic_resources_timer.start(30, 0)
 
         self.animal_hunt_cooldown_timer = Timer()
         self.animal_hunt_cooldown_timer.start(ANIMAL_HUNT_COOLDOWN_TIME, 0)
@@ -86,6 +86,7 @@ class Town:
         if self.worker_timer.has_finished():
             self.data.wood += self.data.lumberjacks
             self.data.stone += self.data.miners
+            self.data.food += self.data.hunters
 
         self.basic_resources_timer.update(current_time)
 

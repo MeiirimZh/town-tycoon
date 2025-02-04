@@ -24,6 +24,7 @@ class Data:
         # Workers
         self.lumberjacks = 0
         self.miners = 0
+        self.hunters = 0
 
         # Upgrade costs
         self.upgrade_wood_click_value_cost = 50
@@ -32,3 +33,4 @@ class Data:
         # Hire costs
         self.hire_lumberjack_cost = 300
         self.hire_miner_cost = 500
+        self.hire_hunter_cost = 100

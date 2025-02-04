@@ -27,13 +27,21 @@ class Store:
         self.hire_buttons = [Button(200, 200, 100, 30, BUTTON_COL, BUTTON_COL_H,
                              BUTTON_COL_P, 16, lambda: self.hire_lumberjack(), self.display, "HIRE"),
                              Button(200, 200, 100, 30, BUTTON_COL, BUTTON_COL_H,
-                             BUTTON_COL_P, 16, lambda: self.hire_miner(), self.display, "HIRE")]
+                             BUTTON_COL_P, 16, lambda: self.hire_miner(), self.display, "HIRE"),
+                             Button(200, 200, 100, 30, BUTTON_COL, BUTTON_COL_H,
+                             BUTTON_COL_P, 16, lambda: self.hire_hunter(), self.display, "HIRE")]
 
         self.hire_text = [Text(20, '300 wood: +1 lumberjack', (255, 255, 255), (750, 200), self.display),
-                          Text(20, '500 stone: 1+ miner', (255, 255, 255), (750, 250), self.display)]
+                          Text(20, '500 stone: 1+ miner', (255, 255, 255), (750, 250), self.display),
+                          Text(20, '100 food: +5 hunters', (255, 255, 255), (750, 300), self.display)]
 
         self.hire_lumberjack_layout = HLayout([self.hire_text[0], self.hire_buttons[0]], self.display)
         self.hire_miner_layout = HLayout([self.hire_text[1], self.hire_buttons[1]], self.display)
+        self.hire_hunter_layout = HLayout([self.hire_text[2], self.hire_buttons[2]], self.display)
+
+        self.info_text = [Text(16, 'Wood', (255, 255, 255), (1150, 700), self.display),
+                          Text(16, 'Stone', (255, 255, 255), (1150, 720), self.display),
+                          Text(16, 'Food', (255, 255, 255), (1150, 740), self.display)]
 
     def run(self, events):
         mouse_pos = pygame.mouse.get_pos()
@@ -59,6 +67,16 @@ class Store:
 
         self.hire_lumberjack_layout.draw(30)
         self.hire_miner_layout.draw(30)
+        self.hire_hunter_layout.draw(30)
+
+        for text in self.info_text:
+            text.draw()
+            if 'Wood' in text.msg:
+                text.update_msg(f'Wood: {self.data.wood}')
+            if 'Stone' in text.msg:
+                text.update_msg(f'Stone: {self.data.stone}')
+            if 'Food' in text.msg:
+                text.update_msg(f'Food: {self.data.food}')
 
         for event in events:
             for button in self.upgrade_buttons:
@@ -90,3 +108,8 @@ class Store:
         if self.data.stone >= self.data.hire_miner_cost:
             self.data.miners += 1
             self.data.stone -= self.data.hire_miner_cost
+
+    def hire_hunter(self):
+        if self.data.food >= self.data.hire_hunter_cost:
+            self.data.hunters += 5
+            self.data.food -= self.data.hire_hunter_cost
