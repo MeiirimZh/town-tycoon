@@ -36,9 +36,9 @@ class Store:
 
         for text in self.upgrade_text:
             if 'wood' in text.msg:
-                text.update_msg(f'{self.data.upgrade_wood_click_value_cost} wood: +{self.data.wood_click_value} wood per click')
+                text.update_msg(f'{self.data.upgrade_wood_click_value_cost} wood: +{self.data.wood_click_value * 2 + 1 - self.data.wood_click_value} wood per click')
             if 'stone' in text.msg:
-                text.update_msg(f'{self.data.upgrade_stone_click_value_cost} stone: +{self.data.stone_click_value} stone per click')
+                text.update_msg(f'{self.data.upgrade_stone_click_value_cost} stone: +{self.data.stone_click_value * 2 + 1 - self.data.stone_click_value} stone per click')
 
         self.upgrade_wood_layout.draw(30)
         self.upgrade_stone_layout.draw(30)
@@ -60,14 +60,6 @@ class Store:
                     print(f'Upgrade stone click value: {self.data.upgrade_stone_click_value_cost}')
                     print(f'Hire lumberjack: {self.data.hire_lumberjack_cost}')
                     print(f'Hire miner: {self.data.hire_miner_cost}')
-                if event.key == pygame.K_e:
-                    if self.data.wood >= self.data.hire_lumberjack_cost:
-                        self.data.lumberjacks += 1
-                        self.data.wood -= self.data.hire_lumberjack_cost
-                if event.key == pygame.K_r:
-                    if self.data.stone >= self.data.hire_miner_cost:
-                        self.data.miners += 1
-                        self.data.stone -= self.data.hire_miner_cost
 
     def upgrade_wood_click_value(self):
         if self.data.wood >= self.data.upgrade_wood_click_value_cost:
@@ -80,3 +72,13 @@ class Store:
             self.data.stone_click_value = self.data.stone_click_value * 2 + 1
             self.data.stone -= self.data.upgrade_stone_click_value_cost
             self.data.upgrade_stone_click_value_cost = self.data.upgrade_stone_click_value_cost * 2 + 100
+
+    def hire_lumberjack(self):
+        if self.data.wood >= self.data.hire_lumberjack_cost:
+            self.data.lumberjacks += 1
+            self.data.wood -= self.data.hire_lumberjack_cost
+
+    def hire_miner(self):
+        if self.data.stone >= self.data.hire_miner_cost:
+            self.data.miners += 1
+            self.data.stone -= self.data.hire_miner_cost
