@@ -19,7 +19,8 @@ class Town:
         self.animal_hunt = animal_hunt
         self.chop_tree = chop_tree
 
-        self.btn_cooldown = Timer()
+        self.can_harvest = False
+        self.btn_cooldown = Timer(True)
         self.btn_cooldown.start(1, 0)
 
         self.worker_timer = Timer(True)
@@ -50,7 +51,7 @@ class Town:
         self.progressbar = Progressbar(self.display, (20, 20), 1, 100, False)
 
     def harvest(self):
-        if self.btn_cooldown.has_finished():
+        if self.can_harvest:
             resource = random.choice(self.data.resource_types)
             if resource == 'Wood':
                 self.data.wood += self.data.wood_click_value
@@ -68,7 +69,7 @@ class Town:
                 self.data.water = min(self.data.water_storage, self.data.water + self.data.water_click_value)
                 # print(f'Water: {self.data.water}')
                 self.log.append(Text(32, f'Water: {self.data.water_click_value}', (255, 255, 255), (60, 400), self.display))
-            self.btn_cooldown.start(1, 0)
+            self.can_harvest = False
             self.progressbar.reset()
 
     def calculate_stability(self):
@@ -83,6 +84,9 @@ class Town:
         current_time = pygame.time.get_ticks()
 
         self.btn_cooldown.update(current_time)
+
+        if self.btn_cooldown.has_finished():
+            self.can_harvest = True
 
         self.display.fill('blue')
         pygame.draw.rect(self.display, (50, 5, 0), (0, 710, 1366, 768))
