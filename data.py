@@ -11,8 +11,8 @@ class Data:
 
         # Resources
         self.resource_types = ['Food', 'Water', 'Wood', 'Stone']
-        self.food = 1000
-        self.water = 2500
+        self.food = 800
+        self.water = 2000
         self.wood = 0
         self.stone = 0
 

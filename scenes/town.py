@@ -146,15 +146,12 @@ class Town:
             self.chop_tree_active = False
             self.chop_tree.game_finished = False
 
+        self.text_list[1].update_msg(f':{self.data.wood}')
+        self.text_list[2].update_msg(f':{self.data.stone}')
+        self.text_list[3].update_msg(f':{self.data.food}')
+        self.text_list[4].update_msg(f':{self.data.water}')
+
         for t in self.text_list:
-            if "W" in t.msg:
-                t.update_msg(f"W: {self.data.wood}")
-            elif "S" in t.msg:
-                t.update_msg(f"S: {self.data.stone}")
-            elif "F" in t.msg:
-                t.update_msg(f"F: {self.data.food}")
-            elif "H" in t.msg:
-                t.update_msg(f"H: {self.data.water}")
             t.draw()
 
         for b in self.button_list:
