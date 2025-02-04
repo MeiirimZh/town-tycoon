@@ -4,25 +4,22 @@ from scripts.textandbuttons import Text
 
 
 class Simulation:
-    def __init__(self, x, y, width, height, display):
+    def __init__(self, x, y, width, height, display, data):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.display = display
+        self.data = data
 
         self.surface = pygame.Surface((self.width, self.height))
 
-        self.hint_text = Text(10, '[SPACE] to reset position', (255, 255, 255), (30, self.height-30), self.surface)
+        self.hint_text = Text(10, '[SPACE] to reset the position', (255, 255, 255), (30, self.height-30), self.surface)
 
         self.left_border = pygame.Rect(0, 0, 50, self.height)
         self.right_border = pygame.Rect(self.width-50, 0, 50, self.height)
         self.top_border = pygame.Rect(0, 0, self.width, 50)
         self.bottom_border = pygame.Rect(0, self.height-50, self.width, 50)
-
-        self.test = pygame.Rect(200, 200, 100, 100)
-        self.test_x = 200
-        self.test_y = 200
 
         self.scroll = [0, 0]
 
@@ -47,13 +44,11 @@ class Simulation:
                 if event.key == pygame.K_SPACE:
                     self.scroll = [0, 0]
 
-        self.test.x = self.test_x + self.scroll[0]
-        self.test.y = self.test_y + self.scroll[1]
-
     def render(self):
         self.surface.fill((0, 200, 20))
 
-        pygame.draw.rect(self.surface, (0, 50, 210), self.test)
+        for house in self.data.houses:
+            house.render(self.surface, self.scroll)
 
         self.hint_text.draw()
 

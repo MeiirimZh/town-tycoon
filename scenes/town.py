@@ -21,7 +21,7 @@ class Town:
         self.animal_hunt = animal_hunt
         self.chop_tree = chop_tree
 
-        self.simulation = Simulation(392, 0, 974, 588, self.display)
+        self.simulation = Simulation(392, 0, 974, 588, self.display, self.data)
 
         self.can_harvest = False
         self.btn_cooldown = Timer(True)

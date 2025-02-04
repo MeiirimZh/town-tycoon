@@ -20,4 +20,5 @@ images = {'crosshair': pygame.image.load('images/crosshair.png'),
           'food_icon': pygame.image.load('images/gui/icons/eda.png'),
           'stone_icon': pygame.image.load('images/gui/icons/kamen.png'),
           'wood_icon': pygame.image.load('images/gui/icons/drova.png'),
-          'water_icon': pygame.image.load('images/gui/icons/voda.png')}
+          'water_icon': pygame.image.load('images/gui/icons/voda.png'),
+          'small_house': pygame.image.load('images/houses/small_house.png')}

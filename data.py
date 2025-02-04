@@ -1,8 +1,13 @@
+from scenes.simulation.house import House
+
+
 class Data:
     def __init__(self):
         # Town
         self.stability = 75
         self.people = 100
+        self.houses = [House('small_house', 200, 200),
+                       House('small_house', 500, 300)]
 
         # Resources
         self.resource_types = ['Food', 'Water', 'Wood', 'Stone']
