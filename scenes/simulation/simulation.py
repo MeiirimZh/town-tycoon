@@ -3,6 +3,7 @@ import pygame
 from config import images
 from scenes.simulation.house import House
 from scripts.textandbuttons import Text
+from config import sounds
 
 
 class Simulation:
@@ -16,7 +17,7 @@ class Simulation:
 
         self.surface = pygame.Surface((self.width, self.height))
 
-        self.hint_text = Text(10, '[SPACE] to reset the position', (255, 255, 255), (30, self.height-30), self.surface)
+        self.hint_text = Text(10, '[Right mouse button] to reset the position', (255, 255, 255), (30, self.height-30), self.surface)
 
         self.left_border = pygame.Rect(0, 0, 50, self.height)
         self.right_border = pygame.Rect(self.width-50, 0, 50, self.height)
@@ -24,10 +25,12 @@ class Simulation:
         self.bottom_border = pygame.Rect(0, self.height-50, self.width, 50)
 
         self.is_building = False
+        self.can_build = False
         self.building_house = None
         self.building_house_type = None
         self.building_house_x = 0
         self.building_house_y = 0
+        self.building_house_rect = None
 
         self.scroll = [0, 0]
 
@@ -50,23 +53,32 @@ class Simulation:
         if self.is_building:
             self.building_house_x = local_mouse_pos[0]
             self.building_house_y = local_mouse_pos[1]
+            self.building_house_rect = pygame.Rect(self.building_house_x, self.building_house_y,
+                                                   self.building_house.get_width(), self.building_house.get_height())
+
+            self.can_build = True
+            for house in self.data.houses:
+                if house.rect.colliderect(self.building_house_rect.move(-self.scroll[0], -self.scroll[1])):
+                    self.can_build = False
 
         for event in events:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    self.scroll = [0, 0]
-                if event.key == pygame.K_z:
-                    self.build_house('small_house')
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if self.is_building:
-                        self.data.houses.append(House(self.building_house_type,
-                                                      self.building_house_x - self.scroll[0],
-                                                      self.building_house_y - self.scroll[1]))
-                        self.is_building = False
+                        if self.can_build:
+                            self.data.houses.append(House(self.building_house_type,
+                                                          self.building_house_x - self.scroll[0],
+                                                          self.building_house_y - self.scroll[1]))
+                            self.is_building = False
+                        else:
+                            pygame.mixer.Sound.play(sounds['cancel1'])
+                if event.button == 2:
+                    self.build_house('small_house', local_mouse_pos)
+                if event.button == 3:
+                    self.scroll = [0, 0]
 
     def render(self):
-        self.surface.fill((0, 200, 20))
+        self.surface.fill((122, 167, 71))
 
         for house in self.data.houses:
             house.render(self.surface, self.scroll)
@@ -78,10 +90,14 @@ class Simulation:
 
         self.display.blit(self.surface, (self.x, self.y))
 
-    def build_house(self, house_type):
+    def build_house(self, house_type, mouse_pos):
         self.is_building = True
         self.building_house_type = house_type
         self.building_house = images[house_type]
+        self.building_house_x = mouse_pos[0]
+        self.building_house_y = mouse_pos[1]
+        self.building_house_rect = pygame.Rect(self.building_house_x, self.building_house_y,
+                                               self.building_house.get_width(), self.building_house.get_height())
 
     def draw_borders(self):
         pygame.draw.rect(self.surface, (255, 255, 255), self.left_border)
