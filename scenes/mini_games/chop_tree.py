@@ -40,6 +40,8 @@ class ChopTree:
         self.result_window = MiniGameResultWindow(513, 199, 340, 260, self.display, self.game_state_manager)
 
         self.game_finished = False
+        
+        self.bg = images['ct_bg'].convert_alpha()
 
     def start_new_game(self, current_time):
         pygame.mixer.music.load('music/mini_games/Chop Tree theme.mp3')
@@ -53,7 +55,7 @@ class ChopTree:
     def run(self, events):
         current_time = pygame.time.get_ticks()
 
-        self.display.fill('green')
+        self.display.blit(self.bg, (0, 0))
 
         self.timer.update(current_time)
 
