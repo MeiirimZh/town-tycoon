@@ -19,7 +19,7 @@ class AnimalHunt:
         self.positions = [(47, 144), (85, 359), (167, 618), (367, 199), (774, 132),
                           (683, 329), (583, 562), (1112, 39), (1097, 399), (956, 658)]
 
-        self.animal_width = 200
+        self.animal_width = 160
         self.animal_height = 80
 
         self.animals = []
@@ -38,6 +38,8 @@ class AnimalHunt:
         self.crosshair = images['crosshair']
         self.crosshair_width = images['crosshair'].get_width()
         self.crosshair_height = images['crosshair'].get_height()
+        self.bg = images['ah_bg'].convert_alpha()
+        self.animal_sprite = images['animal'].convert_alpha()
 
         self.game_finished = False
 
@@ -55,7 +57,7 @@ class AnimalHunt:
 
         current_time = pygame.time.get_ticks()
 
-        self.display.fill('green')
+        self.display.blit(self.bg, (0, 0))
 
         for t in self.text_list:
             t.draw()
@@ -77,7 +79,11 @@ class AnimalHunt:
             pygame.mouse.set_visible(True)
         else:
             for animal in self.animals:
-                pygame.draw.rect(self.display, (255, 255, 255), animal)
+                # pygame.draw.rect(self.display, (255, 255, 255), animal)
+                if random.random() > 0.5:
+                    self.display.blit(self.animal_sprite, (animal[0], animal[1]))
+                else:
+                    self.display.blit(pygame.transform.flip(self.animal_sprite, True, False), (animal[0], animal[1]))
             pygame.mouse.set_visible(False)
             self.display.blit(self.crosshair, (mouse_pos[0]-self.crosshair_width/2, mouse_pos[1]-self.crosshair_height/2))
 

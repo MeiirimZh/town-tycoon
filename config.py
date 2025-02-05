@@ -23,6 +23,9 @@ images = {'crosshair': pygame.image.load('images/crosshair.png'),
           'stone_icon': pygame.image.load('images/gui/icons/kamen.png'),
           'wood_icon': pygame.image.load('images/gui/icons/drova.png'),
           'water_icon': pygame.image.load('images/gui/icons/voda.png'),
-          'small_house': pygame.image.load('images/houses/small_house.png')}
+          'small_house': pygame.image.load('images/houses/small_house.png'),
+          'ct_bg': pygame.image.load('images/backgrounds/chop_tree_bg.png'),
+          'ah_bg': pygame.image.load('images/backgrounds/an_hunt_bg.png'),
+          'animal': pygame.image.load('images/taksa_s_rogami.png')}
 
 sounds = {'cancel1': pygame.mixer.Sound('sounds/Cancel 1.mp3')}
