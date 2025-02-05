@@ -2,6 +2,7 @@ import pygame
 
 from config import images
 from scenes.simulation.house import House
+from scenes.simulation.build_house_menu import BuildHouseMenu
 from scripts.textandbuttons import Text
 from config import sounds
 
@@ -31,6 +32,9 @@ class Simulation:
         self.building_house_x = 0
         self.building_house_y = 0
         self.building_house_rect = None
+
+        self.build_house_menu = BuildHouseMenu(287, 134, 400, 320, self.surface)
+        self.build_house_menu_active = False
 
         self.scroll = [0, 0]
 
@@ -73,6 +77,7 @@ class Simulation:
                         else:
                             pygame.mixer.Sound.play(sounds['cancel1'])
                 if event.button == 2:
+                    # self.build_house_menu_active = not self.build_house_menu_active
                     self.build_house('small_house', local_mouse_pos)
                 if event.button == 3:
                     self.scroll = [0, 0]
@@ -87,6 +92,9 @@ class Simulation:
             self.surface.blit(self.building_house, (self.building_house_x, self.building_house_y))
 
         self.hint_text.draw()
+
+        if self.build_house_menu_active:
+            self.build_house_menu.draw()
 
         self.display.blit(self.surface, (self.x, self.y))
 
