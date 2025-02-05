@@ -24,7 +24,7 @@ images = {'crosshair': pygame.image.load('images/crosshair.png'),
           'wood_icon': pygame.image.load('images/gui/icons/drova.png'),
           'water_icon': pygame.image.load('images/gui/icons/voda.png'),
           'small_house': pygame.image.load('images/houses/small_house.png'),
-          'small_house_icon': pygame.image.load('images/houses/icons/small_house_icon.png')}
+          'small_house_icon': pygame.image.load('images/houses/icons/small_house_icon.png'),
           'small_house': pygame.image.load('images/houses/small_house.png'),
           'ct_bg': pygame.image.load('images/backgrounds/chop_tree_bg.png'),
           'ah_bg': pygame.image.load('images/backgrounds/an_hunt_bg.png'),
