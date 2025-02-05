@@ -8,6 +8,11 @@ from scripts.darken_background import DarkenBG
 from scripts.mini_game_result_window import MiniGameResultWindow
 
 
+class Animal:
+    def __init__(self, rect, facing_right):
+        self.rect = rect
+        self.facing_right = facing_right
+
 class AnimalHunt:
     def __init__(self, display, game_state_manager, data):
         self.display = display
@@ -80,10 +85,10 @@ class AnimalHunt:
         else:
             for animal in self.animals:
                 # pygame.draw.rect(self.display, (255, 255, 255), animal)
-                if random.random() > 0.5:
-                    self.display.blit(self.animal_sprite, (animal[0], animal[1]))
+                if animal.facing_right:
+                    self.display.blit(self.animal_sprite, (animal.rect[0], animal.rect[1]))
                 else:
-                    self.display.blit(pygame.transform.flip(self.animal_sprite, True, False), (animal[0], animal[1]))
+                    self.display.blit(pygame.transform.flip(self.animal_sprite, True, False), (animal.rect[0], animal.rect[1]))
             pygame.mouse.set_visible(False)
             self.display.blit(self.crosshair, (mouse_pos[0]-self.crosshair_width/2, mouse_pos[1]-self.crosshair_height/2))
 
@@ -91,7 +96,7 @@ class AnimalHunt:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 for animal in self.animals:
-                    if animal.collidepoint(mouse_pos):
+                    if animal.rect.collidepoint(mouse_pos):
                         self.animals.remove(animal)
 
         if len(self.animals) == 0:
@@ -109,5 +114,7 @@ class AnimalHunt:
         self.animals = []
 
         for i in range(5):
-            self.animals.append(pygame.Rect(self.positions[i][0], self.positions[i][1],
-                                            self.animal_width, self.animal_height))
+            self.animals.append(Animal(pygame.Rect(self.positions[i][0], self.positions[i][1],
+                                                   self.animal_width, self.animal_height), 
+                                                   True if random.random() > 0.5 else False))
+        
