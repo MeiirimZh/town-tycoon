@@ -75,3 +75,4 @@ class BuildHouseMenu:
         self.simulation.build_house(house_type,
                                     (pygame.mouse.get_pos()[0] - self.display_x,
                                      pygame.mouse.get_pos()[1] - self.display_y))
+        self.small_house_button.is_pressed = False

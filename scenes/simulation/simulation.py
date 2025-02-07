@@ -82,7 +82,7 @@ class Simulation:
 
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
+                if event.button == 3:
                     if self.is_building:
                         if self.can_build:
                             self.data.houses.append(House(self.building_house_type,
