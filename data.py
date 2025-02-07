@@ -13,8 +13,8 @@ class Data:
         self.resource_types = ['Food', 'Water', 'Wood', 'Stone']
         self.food = 800
         self.water = 2000
-        self.wood = 0
-        self.stone = 0
+        self.wood = 500
+        self.stone = 100
 
         # Resources storage
         self.food_storage = 1000

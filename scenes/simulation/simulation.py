@@ -89,10 +89,13 @@ class Simulation:
                                                           self.building_house_x - self.scroll[0],
                                                           self.building_house_y - self.scroll[1]))
                             self.is_building = False
+
+                            pygame.mixer.Sound.play(sounds['build'])
                         else:
                             pygame.mixer.Sound.play(sounds['cancel1'])
                 if event.button == 2:
-                    self.build_house_menu_active = not self.build_house_menu_active
+                    if not self.is_building:
+                        self.build_house_menu_active = not self.build_house_menu_active
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     self.scroll = [0, 0]
