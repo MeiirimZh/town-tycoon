@@ -22,24 +22,24 @@ class BuildHouseMenu:
         self.small_house_title = Text(14, 'Small house', (255, 255, 255), (371, 154), self.display)
         self.small_house_resources = Text(12, '50 wood, 10 stone', (255, 255, 255), (371, 171), self.display)
         self.small_house_result = Text(12, '+10 dwellers', (255, 255, 255), (371, 186), self.display)
-        self.small_house_button = Button(620, 168, 57, 22, BUTTON_COL, BUTTON_COL_H,
+        self.small_house_button = Button(610, 168, 57, 22, BUTTON_COL, BUTTON_COL_H,
                                          BUTTON_COL_P, 14, lambda: self.build_house('small_house'),
                                          self.display, 'BUILD')
         self.build_menu_gui = images['gui_build_menu'].convert_alpha()
 
-        self.medium_house_img = images['small_house_icon']
+        self.medium_house_img = images['medium_house_icon']
         self.medium_house_title = Text(14, 'Medium house', (255, 255, 255), (371, 217), self.display)
         self.medium_house_resources = Text(12, '125 wood, 30 stone', (255, 255, 255), (371, 234), self.display)
         self.medium_house_result = Text(12, '+30 dwellers', (255, 255, 255), (371, 249), self.display)
-        self.medium_house_button = Button(620, 231, 57, 22, BUTTON_COL, BUTTON_COL_H,
+        self.medium_house_button = Button(610, 231, 57, 22, BUTTON_COL, BUTTON_COL_H,
                                           BUTTON_COL_P, 14, lambda: self.build_house('medium_house'),
                                           self.display, 'BUILD')
 
-        self.large_house_img = images['small_house_icon']
+        self.large_house_img = images['large_house_icon']
         self.large_house_title = Text(14, 'Large house', (255, 255, 255), (371, 280), self.display)
         self.large_house_resources = Text(12, '300 wood, 100 stone', (255, 255, 255), (371, 297), self.display)
         self.large_house_result = Text(12, '+70 dwellers', (255, 255, 255), (371, 312), self.display)
-        self.large_house_button = Button(620, 294, 57, 22, BUTTON_COL, BUTTON_COL_H,
+        self.large_house_button = Button(610, 294, 57, 22, BUTTON_COL, BUTTON_COL_H,
                                           BUTTON_COL_P, 14, lambda: self.build_house('large_house'),
                                           self.display, 'BUILD')
 
