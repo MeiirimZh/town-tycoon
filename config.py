@@ -29,7 +29,9 @@ images = {'crosshair': pygame.image.load('images/crosshair.png'),
           'large_house': pygame.image.load('images/houses/large_house.png'),
           'ct_bg': pygame.image.load('images/backgrounds/chop_tree_bg.png'),
           'ah_bg': pygame.image.load('images/backgrounds/an_hunt_bg.png'),
-          'animal': pygame.image.load('images/taksa_s_rogami.png')}
+          'animal': pygame.image.load('images/taksa_s_rogami.png'),
+          'gui_build_menu': pygame.image.load('images/gui/panels/build_menu.png'),
+          'grass' : pygame.image.load('images/backgrounds/grass_tile.png')}
 
 sounds = {'cancel1': pygame.mixer.Sound('sounds/Cancel 1.mp3'),
           'build': pygame.mixer.Sound('sounds/Build.wav')}

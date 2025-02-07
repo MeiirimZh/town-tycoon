@@ -33,12 +33,22 @@ class Simulation:
         self.building_house_y = 0
         self.building_house_rect = None
 
-        self.build_house_menu = BuildHouseMenu(287, 134, 400, 320, self.surface, self.x, self.y, self)
+        self.build_house_menu = BuildHouseMenu(287, 134, self.surface, self.x, self.y, self)
         self.build_house_menu_active = False
 
         self.scroll = [0, 0]
+        self.tile_texture = images["grass"].convert_alpha()
+        self.tile_width, self.tile_height = self.tile_texture.get_size()
+
 
     def run(self, events):
+        offset_x = self.scroll[0] % self.tile_width
+        offset_y = self.scroll[1] % self.tile_height
+
+        for x in range(offset_x - self.tile_width, self.width, self.tile_width):
+            for y in range(offset_y - self.tile_height, self.height, self.tile_height):
+                self.surface.blit(self.tile_texture, (x, y))
+
         mouse_pos = pygame.mouse.get_pos()
         local_mouse_pos = (mouse_pos[0] - self.x, mouse_pos[1] - self.y)
 
@@ -64,8 +74,6 @@ class Simulation:
             for house in self.data.houses:
                 if house.rect.colliderect(self.building_house_rect.move(-self.scroll[0], -self.scroll[1])):
                     self.can_build = False
-
-        self.surface.fill((122, 167, 71))
 
         for house in self.data.houses:
             house.render(self.surface, self.scroll)
