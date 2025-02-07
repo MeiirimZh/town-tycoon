@@ -5,21 +5,17 @@ from scripts.textandbuttons import Text, Button
 
 
 class BuildHouseMenu:
-    def __init__(self, x, y, width, height, display, display_x, display_y, simulation):
+    def __init__(self, x, y, display, display_x, display_y, simulation):
         self.x = x
         self.y = y
-        self.width = width
-        self.height = height
         self.display = display
         self.display_x = display_x
         self.display_y = display_y
         self.simulation = simulation
 
-        self.bg = pygame.Rect(self.x, self.y, self.width, self.height)
-
-        self.scroll_buttons = [Button(652, 402, 25, 16, BUTTON_COL, BUTTON_COL_H,
+        self.scroll_buttons = [Button(642, 392, 25, 16, BUTTON_COL, BUTTON_COL_H,
                                BUTTON_COL_P, 14, self.previous_tab, self.display, '^'),
-                               Button(652, 428, 25, 16, BUTTON_COL, BUTTON_COL_H,
+                               Button(642, 418, 25, 16, BUTTON_COL, BUTTON_COL_H,
                                BUTTON_COL_P, 14, self.next_tab, self.display, 'v')]
 
         self.small_house_img = images['small_house_icon']
@@ -29,6 +25,7 @@ class BuildHouseMenu:
         self.small_house_button = Button(526, 168, 57, 22, BUTTON_COL, BUTTON_COL_H,
                                          BUTTON_COL_P, 14, lambda: self.build_house('small_house'),
                                          self.display, 'BUILD')
+        self.build_menu_gui = images['gui_build_menu'].convert_alpha()
 
         self.tab = 1
         self.tabs = {1: self.first_tab, 2: self.second_tab}
@@ -37,7 +34,7 @@ class BuildHouseMenu:
         mouse_pos = pygame.mouse.get_pos()
         local_mouse_pos = (mouse_pos[0] - self.display_x, mouse_pos[1] - self.display_y)
 
-        pygame.draw.rect(self.display, (116, 63, 57), self.bg)
+        self.display.blit(self.build_menu_gui, (self.x, self.y))
 
         tab_action = self.tabs[self.tab]
         tab_action(events, local_mouse_pos)

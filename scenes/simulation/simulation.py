@@ -33,7 +33,7 @@ class Simulation:
         self.building_house_y = 0
         self.building_house_rect = None
 
-        self.build_house_menu = BuildHouseMenu(287, 134, 400, 320, self.surface, self.x, self.y, self)
+        self.build_house_menu = BuildHouseMenu(287, 134, self.surface, self.x, self.y, self)
         self.build_house_menu_active = False
 
         self.scroll = [0, 0]
