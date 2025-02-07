@@ -177,5 +177,10 @@ class Town:
                     if self.chop_tree_active:
                         self.chop_tree.start_new_game(current_time)
                         self.game_state_manager.set_state('Chop Tree')
+                if event.key == pygame.K_c:
+                    self.data.wood = 9999
+                    self.data.stone = 9999
+                    self.data.food = 9999
+                    self.data.water = 9999
             for b in self.button_list:
                 b.click(event)
