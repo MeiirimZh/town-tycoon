@@ -18,7 +18,7 @@ class Simulation:
 
         self.surface = pygame.Surface((self.width, self.height))
 
-        self.hint_text = Text(10, '[Right mouse button] to reset the position', (255, 255, 255), (30, self.height-30), self.surface)
+        self.hint_text = Text(10, '[SPACE] to reset the position', (255, 255, 255), (30, self.height-30), self.surface)
 
         self.left_border = pygame.Rect(0, 0, 50, self.height)
         self.right_border = pygame.Rect(self.width-50, 0, 50, self.height)
@@ -93,7 +93,8 @@ class Simulation:
                             pygame.mixer.Sound.play(sounds['cancel1'])
                 if event.button == 2:
                     self.build_house_menu_active = not self.build_house_menu_active
-                if event.button == 3:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
                     self.scroll = [0, 0]
 
     def build_house(self, house_type, mouse_pos):
