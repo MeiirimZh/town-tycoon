@@ -33,12 +33,12 @@ class Simulation:
         self.building_house_y = 0
         self.building_house_rect = None
 
-        self.build_house_menu = BuildHouseMenu(287, 134, 400, 320, self.surface, self.x, self.y)
+        self.build_house_menu = BuildHouseMenu(287, 134, 400, 320, self.surface, self.x, self.y, self)
         self.build_house_menu_active = False
 
         self.scroll = [0, 0]
 
-    def update(self, events):
+    def run(self, events):
         mouse_pos = pygame.mouse.get_pos()
         local_mouse_pos = (mouse_pos[0] - self.x, mouse_pos[1] - self.y)
 
@@ -65,7 +65,20 @@ class Simulation:
                 if house.rect.colliderect(self.building_house_rect.move(-self.scroll[0], -self.scroll[1])):
                     self.can_build = False
 
-        self.build_house_menu.update(events)
+        self.surface.fill((122, 167, 71))
+
+        for house in self.data.houses:
+            house.render(self.surface, self.scroll)
+
+        if self.is_building:
+            self.surface.blit(self.building_house, (self.building_house_x, self.building_house_y))
+
+        self.hint_text.draw()
+
+        if self.build_house_menu_active:
+            self.build_house_menu.run(events)
+
+        self.display.blit(self.surface, (self.x, self.y))
 
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -80,25 +93,8 @@ class Simulation:
                             pygame.mixer.Sound.play(sounds['cancel1'])
                 if event.button == 2:
                     self.build_house_menu_active = not self.build_house_menu_active
-                    # self.build_house('small_house', local_mouse_pos)
                 if event.button == 3:
                     self.scroll = [0, 0]
-
-    def render(self):
-        self.surface.fill((122, 167, 71))
-
-        for house in self.data.houses:
-            house.render(self.surface, self.scroll)
-
-        if self.is_building:
-            self.surface.blit(self.building_house, (self.building_house_x, self.building_house_y))
-
-        self.hint_text.draw()
-
-        if self.build_house_menu_active:
-            self.build_house_menu.draw()
-
-        self.display.blit(self.surface, (self.x, self.y))
 
     def build_house(self, house_type, mouse_pos):
         self.is_building = True
@@ -108,6 +104,8 @@ class Simulation:
         self.building_house_y = mouse_pos[1]
         self.building_house_rect = pygame.Rect(self.building_house_x, self.building_house_y,
                                                self.building_house.get_width(), self.building_house.get_height())
+
+        self.build_house_menu_active = False
 
     def draw_borders(self):
         pygame.draw.rect(self.surface, (255, 255, 255), self.left_border)

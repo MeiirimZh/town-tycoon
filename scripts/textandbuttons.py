@@ -79,3 +79,12 @@ class Button:
         self.x = new_pos[0]
         self.y = new_pos[1]
         self.rect.topleft = new_pos
+
+    def click_on_mouse_pos(self, event, mouse_pos):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if self.rect.collidepoint(mouse_pos):
+                self.is_pressed = True
+                self.click_func()
+
+        if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            self.is_pressed = False

@@ -163,8 +163,7 @@ class Town:
 
         self.progressbar.draw()
 
-        self.simulation.update(events)
-        self.simulation.render()
+        self.simulation.run(events)
 
         for event in events:
             if event.type == pygame.KEYDOWN:
