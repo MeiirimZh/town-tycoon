@@ -33,7 +33,7 @@ class Simulation:
         self.building_house_y = 0
         self.building_house_rect = None
 
-        self.build_house_menu = BuildHouseMenu(287, 134, 400, 320, self.surface)
+        self.build_house_menu = BuildHouseMenu(287, 134, 400, 320, self.surface, self.x, self.y)
         self.build_house_menu_active = False
 
         self.scroll = [0, 0]
@@ -65,6 +65,8 @@ class Simulation:
                 if house.rect.colliderect(self.building_house_rect.move(-self.scroll[0], -self.scroll[1])):
                     self.can_build = False
 
+        self.build_house_menu.update(events)
+
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
@@ -77,8 +79,8 @@ class Simulation:
                         else:
                             pygame.mixer.Sound.play(sounds['cancel1'])
                 if event.button == 2:
-                    # self.build_house_menu_active = not self.build_house_menu_active
-                    self.build_house('small_house', local_mouse_pos)
+                    self.build_house_menu_active = not self.build_house_menu_active
+                    # self.build_house('small_house', local_mouse_pos)
                 if event.button == 3:
                     self.scroll = [0, 0]
 
