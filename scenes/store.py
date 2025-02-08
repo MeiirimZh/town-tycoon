@@ -100,16 +100,22 @@ class Store:
             self.data.upgrade_stone_click_value_cost = self.data.upgrade_stone_click_value_cost * 2 + 100
 
     def hire_lumberjack(self):
-        if self.data.wood >= self.data.hire_lumberjack_cost:
-            self.data.lumberjacks += 1
-            self.data.wood -= self.data.hire_lumberjack_cost
+        if self.data.workers < self.data.people:
+            if self.data.wood >= self.data.hire_lumberjack_cost:
+                self.data.workers += 1
+                self.data.lumberjacks += 1
+                self.data.wood -= self.data.hire_lumberjack_cost
 
     def hire_miner(self):
-        if self.data.stone >= self.data.hire_miner_cost:
-            self.data.miners += 1
-            self.data.stone -= self.data.hire_miner_cost
+        if self.data.workers < self.data.people:
+            if self.data.stone >= self.data.hire_miner_cost:
+                self.data.workers += 1
+                self.data.miners += 1
+                self.data.stone -= self.data.hire_miner_cost
 
     def hire_hunter(self):
-        if self.data.food >= self.data.hire_hunter_cost:
-            self.data.hunters += 5
-            self.data.food -= self.data.hire_hunter_cost
+        if self.data.workers < self.data.people:
+            if self.data.food >= self.data.hire_hunter_cost:
+                self.data.workers += 5
+                self.data.hunters += 5
+                self.data.food -= self.data.hire_hunter_cost

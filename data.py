@@ -27,6 +27,7 @@ class Data:
         self.water_click_value = 2
 
         # Workers
+        self.workers = 0
         self.lumberjacks = 0
         self.miners = 0
         self.hunters = 0
