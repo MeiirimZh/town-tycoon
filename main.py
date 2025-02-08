@@ -6,6 +6,7 @@ from scenes.town import Town
 from scenes.store import Store
 from scenes.mini_games.animal_hunt import AnimalHunt
 from scenes.mini_games.chop_tree import ChopTree
+from scenes.mini_games.mining_stone import MiningStone
 from data import Data
 
 
@@ -21,9 +22,11 @@ class Game:
         self.store = Store(self.screen, self.game_state_manager, self.data)
         self.animal_hunt = AnimalHunt(self.screen, self.game_state_manager, self.data)
         self.chop_tree = ChopTree(self.screen, self.game_state_manager, self.data)
-        self.town = Town(self.screen, self.game_state_manager, self.data, self.animal_hunt, self.chop_tree)
+        self.mining_stone = MiningStone(self.screen, self.game_state_manager, self.data)
+        self.town = Town(self.screen, self.game_state_manager, self.data, self.animal_hunt,
+                         self.chop_tree, self.mining_stone)
         self.states = {'Town': self.town, 'Store': self.store,
-                       'Animal Hunt': self.animal_hunt, 'Chop Tree': self.chop_tree}
+                       'Animal Hunt': self.animal_hunt, 'Chop Tree': self.chop_tree, 'Mining Stone': self.mining_stone}
 
         pygame.display.set_caption("Town Tycoon")
 

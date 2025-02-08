@@ -14,6 +14,7 @@ BUTTON_COL_P = (100, 100, 100)
 
 ANIMAL_HUNT_COOLDOWN_TIME = 1
 CHOP_TREE_COOLDOWN_TIME = 1
+MINING_STONE_COOLDOWN_TIME = 1
 
 images = {'crosshair': pygame.image.load('images/crosshair.png'),
           'axe': pygame.image.load('images/axe.png'),

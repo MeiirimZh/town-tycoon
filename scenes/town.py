@@ -14,12 +14,13 @@ from scenes.simulation.simulation import Simulation
 
 
 class Town:
-    def __init__(self, display, game_state_manager, data, animal_hunt, chop_tree):
+    def __init__(self, display, game_state_manager, data, animal_hunt, chop_tree, mining_stone):
         self.display = display
         self.game_state_manager = game_state_manager
         self.data = data
         self.animal_hunt = animal_hunt
         self.chop_tree = chop_tree
+        self.mining_stone = mining_stone
 
         self.simulation = Simulation(392, 0, 974, 588, self.display, self.data)
 
@@ -39,8 +40,12 @@ class Town:
         self.chop_tree_cooldown_timer = Timer()
         self.chop_tree_cooldown_timer.start(CHOP_TREE_COOLDOWN_TIME, 0)
 
+        self.mining_stone_cooldown_timer = Timer()
+        self.mining_stone_cooldown_timer.start(MINING_STONE_COOLDOWN_TIME, 0)
+
         self.animal_hunt_active = False
         self.chop_tree_active = False
+        self.mining_stone_active = False
 
         self.text_list = []
         self.button_list = []
@@ -108,7 +113,6 @@ class Town:
         self.display.blit(self.gui_food, (410, 680))
         self.display.blit(self.gui_water, (560, 680))
 
-
         self.worker_timer.update(current_time)
 
         if self.worker_timer.has_finished():
@@ -146,6 +150,16 @@ class Town:
             self.chop_tree_active = False
             self.chop_tree.game_finished = False
 
+        self.mining_stone_cooldown_timer.update(current_time)
+
+        if self.mining_stone_cooldown_timer.has_finished():
+            self.mining_stone_active = True
+
+        if self.mining_stone.game_finished:
+            self.mining_stone_cooldown_timer.start(MINING_STONE_COOLDOWN_TIME, current_time)
+            self.mining_stone_active = False
+            self.mining_stone.game_finished = False
+
         self.text_list[1].update_msg(f':{self.data.wood}')
         self.text_list[2].update_msg(f':{self.data.stone}')
         self.text_list[3].update_msg(f':{self.data.food}')
@@ -177,6 +191,10 @@ class Town:
                     if self.chop_tree_active:
                         self.chop_tree.start_new_game(current_time)
                         self.game_state_manager.set_state('Chop Tree')
+                if event.key == pygame.K_f:
+                    if self.mining_stone_active:
+                        self.mining_stone.start_new_game(current_time)
+                        self.game_state_manager.set_state('Mining Stone')
                 if event.key == pygame.K_c:
                     self.data.wood = 9999
                     self.data.stone = 9999
