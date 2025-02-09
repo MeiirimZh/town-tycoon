@@ -16,15 +16,19 @@ class ChopTree:
 
         self.timer = Timer()
 
-        self.parts = [pygame.Rect(583, 109, 100, 50)]
+        self.parts = [pygame.Rect(583, 159, 100, 50)]
         self.target = None
 
         for i in range(9):
             self.parts.append(pygame.Rect(583, self.parts[-1].y+50, 100, 50))
 
-        self.axe = images['axe']
+        self.aim = pygame.transform.flip(images['ct_aim'].convert_alpha(), True, False)
+        self.indicator = images['ct_strike_indicator'].convert_alpha()
+        self.tree_sprite = images['ct_tree'].convert_alpha()
+        self.leaves = images['ct_leaves'].convert_alpha()
+        self.strike = images['ct_strike'].convert_alpha()
         self.detect_rect = pygame.Rect(583, 109, 100, 50)
-        self.axe_pos = 109
+        self.aim_pos = 109
 
         self.direction = 1
 
@@ -56,6 +60,8 @@ class ChopTree:
         current_time = pygame.time.get_ticks()
 
         self.display.blit(self.bg, (0, 0))
+        self.display.blit(self.tree_sprite, (583, 0))
+        self.display.blit(self.leaves, (300, -200))
 
         self.timer.update(current_time)
 
@@ -74,20 +80,20 @@ class ChopTree:
 
             self.game_finished = True
         else:
-            self.display.blit(self.axe, (790, self.axe_pos))
+            self.display.blit(self.aim, (790, self.aim_pos))
 
-            if self.axe_pos == 109:
+            if self.aim_pos <= 109:
                 self.direction = 1
-            elif self.axe_pos == 559:
+            elif self.aim_pos >= 639:
                 self.direction = -1
 
-            self.axe_pos += 5 * self.direction
-            self.detect_rect.y = self.axe_pos
+            self.aim_pos += 7 * self.direction
+            self.detect_rect.y = self.aim_pos
 
             for part in self.parts:
                 pygame.draw.rect(self.display, (125, 28, 28), part)
 
-            pygame.draw.rect(self.display, (255, 255, 0), self.target)
+            self.display.blit(self.indicator, (self.target[0] - 70, self.target[1])) 
 
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
