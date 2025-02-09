@@ -15,6 +15,7 @@ class ChopTree:
         self.data = data
 
         self.timer = Timer()
+        self.strike_duration = Timer()
 
         self.parts = [pygame.Rect(583, 159, 100, 50)]
         self.target = None
@@ -55,6 +56,7 @@ class ChopTree:
         self.generate_target()
         self.wood = 0
         self.chops = 0
+        self.strike_pos = 0
 
     def run(self, events):
         current_time = pygame.time.get_ticks()
@@ -90,22 +92,25 @@ class ChopTree:
             self.aim_pos += 7 * self.direction
             self.detect_rect.y = self.aim_pos
 
-            for part in self.parts:
-                pygame.draw.rect(self.display, (125, 28, 28), part)
-
             self.display.blit(self.indicator, (self.target[0] - 70, self.target[1])) 
+            if not self.strike_duration.has_finished():
+                self.display.blit(self.strike, (500, self.strike_pos - 40))        
+            self.strike_duration.update(current_time)
 
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if self.target.colliderect(self.detect_rect):
+                        self.strike_pos = self.aim_pos
                         result = random.randint(self.reward, self.reward * 5)
 
                         self.wood += result
                         self.data.wood += result
 
                         self.chops += 1
-                        self.generate_target()
+                        self.generate_target()         
+                        self.strike_duration.start(0.3, current_time)
+
 
     def generate_target(self):
         self.target = random.choice(self.parts)
