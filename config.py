@@ -39,7 +39,11 @@ images = {'crosshair': pygame.image.load('images/crosshair.png'),
           'ct_leaves' : pygame.image.load('images/ct_minigame/ct_leaves.png'),
           'ct_strike_indicator': pygame.image.load('images/ct_minigame/ct_strike_indicator.png'),
           'ct_aim': pygame.image.load('images/ct_minigame/ct_aim.png'),
-          'ct_strike': pygame.image.load('images/ct_minigame/ct_strike.png')}
+          'ct_strike': pygame.image.load('images/ct_minigame/ct_strike.png'),
+          'm_pickaxe': pygame.image.load('images/mine_minigame/pickaxe.png'),
+          'm_stone': pygame.image.load('images/mine_minigame/kamen_yo.png'),
+          'm_shards': pygame.image.load('images/mine_minigame/shattered_stone.png'),
+          'm_bg': pygame.image.load('images/mine_minigame/bg_mine.png')}
 
 sounds = {'cancel1': pygame.mixer.Sound('sounds/Cancel 1.mp3'),
           'build': pygame.mixer.Sound('sounds/Build.wav')}

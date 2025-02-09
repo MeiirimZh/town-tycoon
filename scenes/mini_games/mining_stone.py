@@ -1,7 +1,7 @@
 import pygame
 import random
 
-from config import SCREENWIDTH, SCREENHEIGHT
+from config import SCREENWIDTH, SCREENHEIGHT, images
 from scripts.timer import Timer
 from scripts.textandbuttons import Text
 from scripts.darken_background import DarkenBG
@@ -16,6 +16,7 @@ class MiningStone:
 
         self.timer = Timer()
         self.round_timer = Timer(True)
+        self.strike_duration = Timer()
 
         self.reward = self.data.stone_click_value
         self.rounds = 1
@@ -40,6 +41,11 @@ class MiningStone:
 
         self.game_finished = False
 
+        self.pickaxe = pygame.transform.scale(images['m_pickaxe'], (400, 400)).convert_alpha()
+        self.stone_sprite = images['m_stone'].convert_alpha()
+        self.shards = images['m_shards'].convert_alpha()
+        self.bg = images['m_bg'].convert_alpha()
+
     def start_new_game(self, current_time):
         self.timer.start(30, current_time)
         self.round_timer.start(10, current_time)
@@ -50,10 +56,15 @@ class MiningStone:
     def run(self, events):
         current_time = pygame.time.get_ticks()
 
-        self.display.fill('green')
+        self.display.blit(self.bg, (0, 0))
 
         self.timer.update(current_time)
         self.round_timer.update(current_time)
+        self.display.blit(self.pickaxe, (300, 200))
+        if self.strike_duration.has_finished():
+            self.display.blit(self.stone_sprite, (700, 400))
+        else:
+            self.display.blit(self.shards, (700, 400))
 
         pygame.draw.rect(self.display, (23, 23, 23), self.bar_bg)
         pygame.draw.rect(self.display, (255, 255, 255), self.bar)
@@ -83,6 +94,7 @@ class MiningStone:
 
                     self.data.stone += result
                     self.stone += result
+                    self.strike_duration.start(0.3, current_time)
 
                 self.bar_width = 300
                 self.rounds += 1
@@ -90,6 +102,8 @@ class MiningStone:
             if self.bar_width - self.get_bar_step_pixels() >= 0:
                 self.bar_width -= self.get_bar_step_pixels()
                 self.bar = pygame.Rect(183, 650, self.bar_width, 30)
+        
+        self.strike_duration.update(current_time)
 
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
