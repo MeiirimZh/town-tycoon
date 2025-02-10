@@ -83,7 +83,7 @@ class MiningStone:
         if self.timer.has_finished():
             self.darken_bg.draw(self.display)
 
-            self.result_window.set_results('STONE', self.stone, 'ROUNDS', self.rounds)
+            self.result_window.set_results('STONE', self.stone, 'ROUNDS', self.rounds + 1)
             self.result_window.draw(events)
 
             self.game_finished = True

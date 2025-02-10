@@ -32,7 +32,10 @@ class Town:
         self.worker_timer.start(1, 0)
 
         self.basic_resources_timer = Timer(True)
-        self.basic_resources_timer.start(30, 0)
+        self.basic_resources_timer.start(10, 0)
+
+        self.town_development_timer = Timer(True)
+        self.town_development_timer.start(15, 0)
 
         self.animal_hunt_cooldown_timer = Timer()
         self.animal_hunt_cooldown_timer.start(ANIMAL_HUNT_COOLDOWN_TIME, 0)
@@ -129,6 +132,17 @@ class Town:
             # print(f'Water: {self.data.water}')
 
         # print(f'Stability: {self.calculate_stability()}')
+
+        self.town_development_timer.update(current_time)
+
+        if self.town_development_timer.has_finished():
+            # Education
+            if self.data.schools < self.data.people // 100:
+                self.data.education = max(0, self.data.education - 1)
+            elif self.data.schools == self.data.people // 100:
+                pass
+            elif self.data.schools > self.data.people // 100:
+                self.data.education = min(100, self.data.education + 1)
 
         self.animal_hunt_cooldown_timer.update(current_time)
 

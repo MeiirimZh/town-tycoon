@@ -8,6 +8,12 @@ class Data:
         self.people = 100
         self.houses = [House('small_house', 200, 200),
                        House('small_house', 500, 300)]
+        self.schools = 0
+
+        # Town development
+        self.education = 50
+        self.safety = 50
+        self.health = 50
 
         # Resources
         self.resource_types = ['Food', 'Water', 'Wood', 'Stone']
