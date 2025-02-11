@@ -141,8 +141,22 @@ class Town:
                 self.data.education = max(0, self.data.education - 1)
             elif self.data.schools == self.data.people // 100:
                 pass
-            elif self.data.schools > self.data.people // 100:
+            else:
                 self.data.education = min(100, self.data.education + 1)
+            # Safety
+            if self.data.guard_houses < self.data.people // 100:
+                self.data.guard_houses = max(0, self.data.safety - 1)
+            elif self.data.guard_houses == self.data.people // 100:
+                pass
+            else:
+                self.data.safety = min(100, self.data.safety + 1)
+            # Health
+            if self.data.hospitals < self.data.people // 100:
+                self.data.hospitals = max(0, self.data.health - 1)
+            elif self.data.hospitals == self.data.people // 100:
+                pass
+            else:
+                self.data.health = min(100, self.data.health + 1)
 
         self.animal_hunt_cooldown_timer.update(current_time)
 

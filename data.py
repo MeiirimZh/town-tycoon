@@ -9,6 +9,8 @@ class Data:
         self.houses = [House('small_house', 200, 200),
                        House('small_house', 500, 300)]
         self.schools = 0
+        self.guard_houses = 0
+        self.hospitals = 0
 
         # Town development
         self.education = 50
