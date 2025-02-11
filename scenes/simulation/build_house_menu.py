@@ -51,6 +51,22 @@ class BuildHouseMenu:
                                          BUTTON_COL_P, 14, lambda: self.build_house('school'),
                                          self.display, 'BUILD')
 
+        self.guard_house_img = images['school_icon']
+        self.guard_house_title = Text(14, 'Guard house', (255, 255, 255), (371, 217), self.display)
+        self.guard_house_resources = Text(12, '350 wood, 125 stone', (255, 255, 255), (371, 234), self.display)
+        self.guard_house_result = Text(12, 'Provides safety', (255, 255, 255), (371, 249), self.display)
+        self.guard_house_button = Button(610, 231, 57, 22, BUTTON_COL, BUTTON_COL_H,
+                                          BUTTON_COL_P, 14, lambda: self.build_house('guard_house'),
+                                          self.display, 'BUILD')
+
+        self.hospital_img = images['school_icon']
+        self.hospital_title = Text(14, 'Hospital', (255, 255, 255), (371, 280), self.display)
+        self.hospital_resources = Text(12, '300 wood, 100 stone', (255, 255, 255), (371, 297), self.display)
+        self.hospital_result = Text(12, 'Provides health', (255, 255, 255), (371, 312), self.display)
+        self.hospital_button = Button(610, 294, 57, 22, BUTTON_COL, BUTTON_COL_H,
+                                         BUTTON_COL_P, 14, lambda: self.build_house('hospital'),
+                                         self.display, 'BUILD')
+
         self.tab = 1
         self.tabs = {1: self.first_tab, 2: self.second_tab}
 
@@ -120,8 +136,28 @@ class BuildHouseMenu:
         self.school_button.check_inp(mouse_pos)
         self.school_button.draw()
 
+        # Guard house
+        self.display.blit(self.guard_house_img, (307, 217))
+        self.guard_house_title.draw()
+        self.guard_house_resources.draw()
+        self.guard_house_result.draw()
+
+        self.guard_house_button.check_inp(mouse_pos)
+        self.guard_house_button.draw()
+
+        # Hospital
+        self.display.blit(self.hospital_img, (307, 280))
+        self.hospital_title.draw()
+        self.hospital_resources.draw()
+        self.hospital_result.draw()
+
+        self.hospital_button.check_inp(mouse_pos)
+        self.hospital_button.draw()
+
         for event in events:
             self.school_button.click_on_mouse_pos(event, mouse_pos)
+            self.guard_house_button.click_on_mouse_pos(event, mouse_pos)
+            self.hospital_button.click_on_mouse_pos(event, mouse_pos)
 
     def build_house(self, house_type):
         if house_type == 'small_house':
@@ -168,6 +204,30 @@ class BuildHouseMenu:
                 self.school_button.is_pressed = False
 
                 self.simulation.data.schools += 1
+                self.simulation.data.wood -= 200
+                self.simulation.data.stone -= 50
+            else:
+                pygame.mixer.Sound.play(sounds['cancel1'])
+        elif house_type == 'guard_house':
+            if self.simulation.data.wood >= 350 and self.simulation.data.stone >= 125:
+                self.simulation.build_house(house_type,
+                                            (pygame.mouse.get_pos()[0] - self.display_x,
+                                             pygame.mouse.get_pos()[1] - self.display_y))
+                self.guard_house_button.is_pressed = False
+
+                self.simulation.data.guard_houses += 1
+                self.simulation.data.wood -= 350
+                self.simulation.data.stone -= 125
+            else:
+                pygame.mixer.Sound.play(sounds['cancel1'])
+        elif house_type == 'hospital':
+            if self.simulation.data.wood >= 200 and self.simulation.data.stone >= 50:
+                self.simulation.build_house(house_type,
+                                            (pygame.mouse.get_pos()[0] - self.display_x,
+                                             pygame.mouse.get_pos()[1] - self.display_y))
+                self.hospital_button.is_pressed = False
+
+                self.simulation.data.hospitals += 1
                 self.simulation.data.wood -= 200
                 self.simulation.data.stone -= 50
             else:
