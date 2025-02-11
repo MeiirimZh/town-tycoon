@@ -43,7 +43,7 @@ class BuildHouseMenu:
                                           BUTTON_COL_P, 14, lambda: self.build_house('large_house'),
                                           self.display, 'BUILD')
 
-        self.school_img = images['medium_house_icon']
+        self.school_img = images['school_icon']
         self.school_title = Text(14, 'School', (255, 255, 255), (371, 154), self.display)
         self.school_resources = Text(12, '200 wood, 50 stone', (255, 255, 255), (371, 171), self.display)
         self.school_result = Text(12, 'Provides education', (255, 255, 255), (371, 186), self.display)

@@ -8,11 +8,13 @@ class House:
         self.x = x
         self.y = y
         if self.type == 'small_house':
-            self.shadow_size = (100, 80)
+            self.shadow_size = (100, 20)
         elif self.type == 'medium_house':
-            self.shadow_size = (200, 80)
+            self.shadow_size = (200, 20)
         elif self.type == 'large_house':
-            self.shadow_size = (200, 180)
+            self.shadow_size = (200, 20)
+        elif self.type == 'school':
+            self.shadow_size = (200, 20)
         else:
             self.shadow_size = (0, 0)
 
@@ -22,5 +24,5 @@ class House:
         self.shadow.fill((0, 0, 0, 128))
 
     def render(self, display, scroll):
-        display.blit(self.shadow, (self.x + 8 + scroll[0], self.y + 25 + scroll[1]))
+        display.blit(self.shadow, (self.x + 8 + scroll[0], self.y + self.img.get_height() - 15 + scroll[1]))
         display.blit(self.img, (self.x + scroll[0], self.y + scroll[1]))
