@@ -43,6 +43,14 @@ class BuildHouseMenu:
                                           BUTTON_COL_P, 14, lambda: self.build_house('large_house'),
                                           self.display, 'BUILD')
 
+        self.school_img = images['medium_house_icon']
+        self.school_title = Text(14, 'School', (255, 255, 255), (371, 154), self.display)
+        self.school_resources = Text(12, '200 wood, 50 stone', (255, 255, 255), (371, 171), self.display)
+        self.school_result = Text(12, 'Provides education', (255, 255, 255), (371, 186), self.display)
+        self.school_button = Button(610, 168, 57, 22, BUTTON_COL, BUTTON_COL_H,
+                                         BUTTON_COL_P, 14, lambda: self.build_house('school'),
+                                         self.display, 'BUILD')
+
         self.tab = 1
         self.tabs = {1: self.first_tab, 2: self.second_tab}
 
@@ -103,7 +111,17 @@ class BuildHouseMenu:
             self.large_house_button.click_on_mouse_pos(event, mouse_pos)
 
     def second_tab(self, events, mouse_pos):
-        pass
+        # School
+        self.display.blit(self.school_img, (307, 154))
+        self.school_title.draw()
+        self.school_resources.draw()
+        self.school_result.draw()
+
+        self.school_button.check_inp(mouse_pos)
+        self.school_button.draw()
+
+        for event in events:
+            self.school_button.click_on_mouse_pos(event, mouse_pos)
 
     def build_house(self, house_type):
         if house_type == 'small_house':
@@ -140,5 +158,17 @@ class BuildHouseMenu:
                 self.simulation.data.people += 70
                 self.simulation.data.wood -= 300
                 self.simulation.data.stone -= 100
+            else:
+                pygame.mixer.Sound.play(sounds['cancel1'])
+        elif house_type == 'school':
+            if self.simulation.data.wood >= 200 and self.simulation.data.stone >= 50:
+                self.simulation.build_house(house_type,
+                                            (pygame.mouse.get_pos()[0] - self.display_x,
+                                             pygame.mouse.get_pos()[1] - self.display_y))
+                self.school_button.is_pressed = False
+
+                self.simulation.data.schools += 1
+                self.simulation.data.wood -= 200
+                self.simulation.data.stone -= 50
             else:
                 pygame.mixer.Sound.play(sounds['cancel1'])
