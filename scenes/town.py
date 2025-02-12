@@ -118,10 +118,28 @@ class Town:
 
         self.worker_timer.update(current_time)
 
+        if self.data.education >= 75:
+            self.data.buffs.append('High Efficiency')
+            if 'Low Efficiency' in self.data.debuffs:
+                self.data.debuffs.remove('Low Efficiency')
+        elif self.data.education <= 25:
+            self.data.debuffs.append('Low Efficiency')
+            if 'High Efficiency' in self.data.buffs:
+                self.data.buffs.remove('High Efficiency')
+
         if self.worker_timer.has_finished():
-            self.data.wood += self.data.lumberjacks
-            self.data.stone += self.data.miners
-            self.data.food += self.data.hunters
+            if 'High Efficiency' in self.data.buffs:
+                self.data.wood += self.data.lumberjacks * 2
+                self.data.stone += self.data.miners * 2
+                self.data.food += self.data.hunters * 2
+            elif 'Low Efficiency' in self.data.debuffs:
+                self.data.wood += self.data.lumberjacks // 2
+                self.data.stone += self.data.miners // 2
+                self.data.food += self.data.hunters // 2
+            else:
+                self.data.wood += self.data.lumberjacks
+                self.data.stone += self.data.miners
+                self.data.food += self.data.hunters
 
         self.basic_resources_timer.update(current_time)
 

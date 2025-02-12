@@ -6,6 +6,8 @@ class Data:
         # Town
         self.stability = 75
         self.people = 100
+        self.buffs = []
+        self.debuffs = []
         self.houses = [House('small_house', 200, 200),
                        House('small_house', 500, 300)]
         self.schools = 0
