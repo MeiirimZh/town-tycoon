@@ -70,6 +70,18 @@ class Town:
         self.gui_wood = pygame.transform.scale(images['wood_icon'].convert_alpha(), (50, 50))
         self.gui_stone = pygame.transform.scale(images['stone_icon'].convert_alpha(), (50, 50))
 
+        self.button_list.append(Button(1218, 608, 130, 27, BUTTON_COL, BUTTON_COL_H,
+                                       BUTTON_COL_P, 16, self.show_mini_games, self.display, 'MINI-GAMES'))
+
+        self.mini_games_menu_active = False
+        self.mini_games_buttons = []
+        self.mini_games_buttons.append(Button(1198, 581, 150, 27, BUTTON_COL, BUTTON_COL_H,
+                                              BUTTON_COL_P, 16, 'a', self.display, 'Chop Tree'))
+        self.mini_games_buttons.append(Button(1198, 554, 150, 27, BUTTON_COL, BUTTON_COL_H,
+                                              BUTTON_COL_P, 16, 'a', self.display, 'Mining Stone'))
+        self.mini_games_buttons.append(Button(1198, 527, 150, 27, BUTTON_COL, BUTTON_COL_H,
+                                              BUTTON_COL_P, 16, 'a', self.display, 'Animal Hunt'))
+
     def harvest(self):
         if self.can_harvest:
             resource = random.choice(self.data.resource_types)
@@ -98,6 +110,9 @@ class Town:
         total_scores = food_scores + water_scores
 
         return get_quarter(total_scores, 20)
+
+    def show_mini_games(self):
+        self.mini_games_menu_active = not self.mini_games_menu_active
 
     def run(self, events):
         mouse_pos = pygame.mouse.get_pos()
@@ -217,6 +232,11 @@ class Town:
         for b in self.button_list:
             b.check_inp(mouse_pos)
             b.draw()
+
+        if self.mini_games_menu_active:
+            for b in self.mini_games_buttons:
+                b.check_inp(mouse_pos)
+                b.draw()
 
         for index, l in enumerate(self.log):
             l.draw((100, 365 - (50 * index)))
