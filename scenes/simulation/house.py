@@ -15,6 +15,10 @@ class House:
             self.shadow_size = (200, 20)
         elif self.type == 'school':
             self.shadow_size = (200, 20)
+        elif self.type == 'guard_house':
+            self.shadow_size = (200, 20)
+        elif self.type == 'hospital':
+            self.shadow_size = (200, 20)
         else:
             self.shadow_size = (0, 0)
 

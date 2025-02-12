@@ -32,7 +32,7 @@ class Town:
         self.worker_timer.start(1, 0)
 
         self.basic_resources_timer = Timer(True)
-        self.basic_resources_timer.start(10, 0)
+        self.basic_resources_timer.start(1, 0)
 
         self.town_development_timer = Timer(True)
         self.town_development_timer.start(15, 0)
@@ -60,6 +60,7 @@ class Town:
         self.text_list.append(Text(24, f":{self.data.stone}", (255, 255, 255), (610, 640), self.display))
         self.text_list.append(Text(24, f":{self.data.food}", (255, 255, 255), (460, 690), self.display))
         self.text_list.append(Text(24, f":{self.data.water}", (255, 255, 255), (610, 690), self.display))
+        self.text_list.append(Text(24, "Stability:", (255, 255, 255), (45, 505), self.display))
 
         self.progressbar = Progressbar(self.display, (30, 645), 1, 330, False)
 
@@ -69,6 +70,11 @@ class Town:
         self.gui_food = pygame.transform.scale(images['food_icon'].convert_alpha(), (50, 50))
         self.gui_wood = pygame.transform.scale(images['wood_icon'].convert_alpha(), (50, 50))
         self.gui_stone = pygame.transform.scale(images['stone_icon'].convert_alpha(), (50, 50))
+        self.st_frame = images['st_frame'].convert_alpha()
+        self.gui_icon_sh = images['sh_icon'].convert_alpha()
+        self.gui_icon_h = images['h_icon'].convert_alpha()
+        self.gui_icon_avg = images['avg_icon'].convert_alpha()
+        self.gui_icon_sad = images['sad_icon'].convert_alpha()
 
         self.button_list.append(Button(1218, 608, 130, 27, BUTTON_COL, BUTTON_COL_H,
                                        BUTTON_COL_P, 16, self.show_mini_games, self.display, 'MINI-GAMES'))
@@ -76,11 +82,25 @@ class Town:
         self.mini_games_menu_active = False
         self.mini_games_buttons = []
         self.mini_games_buttons.append(Button(1198, 581, 150, 27, BUTTON_COL, BUTTON_COL_H,
-                                              BUTTON_COL_P, 16, 'a', self.display, 'Chop Tree'))
+                                              BUTTON_COL_P, 16, lambda: self.start_minigame('ct'), self.display, 'Chop Tree'))
         self.mini_games_buttons.append(Button(1198, 554, 150, 27, BUTTON_COL, BUTTON_COL_H,
-                                              BUTTON_COL_P, 16, 'a', self.display, 'Mining Stone'))
+                                              BUTTON_COL_P, 16, lambda: self.start_minigame('ms'), self.display, 'Mining Stone'))
         self.mini_games_buttons.append(Button(1198, 527, 150, 27, BUTTON_COL, BUTTON_COL_H,
-                                              BUTTON_COL_P, 16, 'a', self.display, 'Animal Hunt'))
+                                              BUTTON_COL_P, 16, lambda: self.start_minigame('ah'), self.display, 'Animal Hunt'))
+
+
+
+    def start_minigame(self, minigame):
+        current_time = pygame.time.get_ticks()
+        if minigame == 'ah':
+            self.animal_hunt.start_new_game(current_time)
+            self.game_state_manager.set_state('Animal Hunt')
+        elif minigame == 'ct':
+            self.chop_tree.start_new_game(current_time)
+            self.game_state_manager.set_state('Chop Tree')
+        elif minigame == 'ms':
+            self.mining_stone.start_new_game(current_time)
+            self.game_state_manager.set_state('Mining Stone')
 
     def harvest(self):
         if self.can_harvest:
@@ -130,6 +150,16 @@ class Town:
         self.display.blit(self.gui_stone, (560, 620))
         self.display.blit(self.gui_food, (410, 680))
         self.display.blit(self.gui_water, (560, 680))
+        self.display.blit(self.st_frame, (250, 470))
+
+        if self.calculate_stability() == 1:
+            self.display.blit(self.gui_icon_sad, (266, 486))
+        elif self.calculate_stability() == 2:
+            self.display.blit(self.gui_icon_avg, (266, 486))
+        elif self.calculate_stability() == 3:
+            self.display.blit(self.gui_icon_h, (266, 486))
+        elif self.calculate_stability() == 4:
+            self.display.blit(self.gui_icon_sh, (266, 486))
 
         self.worker_timer.update(current_time)
 
@@ -264,7 +294,9 @@ class Town:
                 if event.key == pygame.K_c:
                     self.data.wood = 9999
                     self.data.stone = 9999
-                    self.data.food = 9999
-                    self.data.water = 9999
+                    self.data.food = self.data.food_storage
+                    self.data.water = self.data.water_storage
             for b in self.button_list:
+                b.click(event)
+            for b in self.mini_games_buttons:
                 b.click(event)

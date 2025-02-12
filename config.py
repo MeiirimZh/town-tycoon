@@ -47,7 +47,12 @@ images = {'crosshair': pygame.image.load('images/crosshair.png'),
           'm_pickaxe': pygame.image.load('images/mine_minigame/pickaxe.png'),
           'm_stone': pygame.image.load('images/mine_minigame/kamen_yo.png'),
           'm_shards': pygame.image.load('images/mine_minigame/shattered_stone.png'),
-          'm_bg': pygame.image.load('images/mine_minigame/bg_mine.png')}
+          'm_bg': pygame.image.load('images/mine_minigame/bg_mine.png'),
+          'st_frame': pygame.image.load('images/gui/panels/frame.png'),
+          'sh_icon': pygame.image.load('images/gui/icons/super_happy.png'),
+          'h_icon': pygame.image.load('images/gui/icons/happy_happy.png'),
+          'avg_icon': pygame.image.load('images/gui/icons/zloi.png'),
+          'sad_icon': pygame.image.load('images/gui/icons/sad.png')}
 
 sounds = {'cancel1': pygame.mixer.Sound('sounds/Cancel 1.mp3'),
           'build': pygame.mixer.Sound('sounds/Build.wav')}
