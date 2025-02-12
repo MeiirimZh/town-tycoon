@@ -233,17 +233,17 @@ class Town:
             b.check_inp(mouse_pos)
             b.draw()
 
-        if self.mini_games_menu_active:
-            for b in self.mini_games_buttons:
-                b.check_inp(mouse_pos)
-                b.draw()
-
         for index, l in enumerate(self.log):
             l.draw((100, 365 - (50 * index)))
 
         self.progressbar.draw()
 
         self.simulation.run(events)
+
+        if self.mini_games_menu_active:
+            for b in self.mini_games_buttons:
+                b.check_inp(mouse_pos)
+                b.draw()
 
         for event in events:
             if event.type == pygame.KEYDOWN:
