@@ -1,4 +1,6 @@
 import pygame
+import json
+
 from config import images
 
 
@@ -30,3 +32,7 @@ class House:
     def render(self, display, scroll):
         display.blit(self.shadow, (self.x + 8 + scroll[0], self.y + self.img.get_height() - 15 + scroll[1]))
         display.blit(self.img, (self.x + scroll[0], self.y + scroll[1]))
+
+
+    def to_dict(self):
+        return {"house_type": self.type, "x": self.x, "y": self.y}

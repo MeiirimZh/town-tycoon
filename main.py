@@ -7,6 +7,7 @@ from scenes.store import Store
 from scenes.mini_games.animal_hunt import AnimalHunt
 from scenes.mini_games.chop_tree import ChopTree
 from scenes.mini_games.mining_stone import MiningStone
+from scripts import utils
 from data import Data
 
 
@@ -18,7 +19,7 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.game_state_manager = GameStateManager('Town')
-        self.data = Data()
+        self.data = utils.load()
         self.store = Store(self.screen, self.game_state_manager, self.data)
         self.animal_hunt = AnimalHunt(self.screen, self.game_state_manager, self.data)
         self.chop_tree = ChopTree(self.screen, self.game_state_manager, self.data)
@@ -36,10 +37,12 @@ class Game:
 
             for event in events:
                 if event.type == pygame.QUIT:
+                    utils.save(self.data)
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
+                        utils.save(self.data)
                         pygame.quit()
                         sys.exit()
 

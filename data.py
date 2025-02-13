@@ -50,3 +50,39 @@ class Data:
         self.hire_lumberjack_cost = 300
         self.hire_miner_cost = 500
         self.hire_hunter_cost = 100
+
+    def to_dict(self):
+        return {
+        "stability": self.stability,
+        "people": self.people,
+        "buffs": self.buffs,
+        "debuffs": self.debuffs,
+        "houses": [house.to_dict() for house in self.houses],
+        "schools": self.schools,
+        "guard_houses": self.guard_houses,
+        "hospitals": self.hospitals,
+        "education": self.education,
+        "safety": self.safety,
+        "health": self.health,
+        "resource_types": self.resource_types,
+        "food": self.food,
+        "water": self.water,
+        "wood": self.wood,
+        "stone": self.stone,
+        "food_storage": self.food_storage,
+        "water_storage": self.water_storage,
+        "wood_click_value": self.wood_click_value,
+        "stone_click_value": self.stone_click_value,
+        "food_click_value": self.food_click_value,
+        "water_click_value": self.water_click_value,
+        "workers": self.workers,
+        "lumberjacks": self.lumberjacks,
+        "miners": self.miners,
+        "hunters": self.hunters,
+        "upgrade_wood_click_value_cost": self.upgrade_wood_click_value_cost,
+        "upgrade_stone_click_value_cost": self.upgrade_stone_click_value_cost,
+        "hire_lumberjack_cost": self.hire_lumberjack_cost,
+        "hire_miner_cost": self.hire_miner_cost,
+        "hire_hunter_cost": self.hire_hunter_cost
+        }
+    
