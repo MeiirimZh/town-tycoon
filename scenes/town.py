@@ -7,7 +7,7 @@ from config import *
 
 from scripts.timer import Timer
 from scripts.textandbuttons import Text, Button
-from scripts.utils import get_quarter, get_section
+from scripts.utils import get_quarter, get_section, save
 from scripts.progressbar import Progressbar
 
 from scenes.simulation.simulation import Simulation
@@ -62,9 +62,9 @@ class Town:
         self.text_list.append(Text(24, f":{self.data.water}", (255, 255, 255), (610, 690), self.display))
         self.text_list.append(Text(24, "Stability:", (255, 255, 255), (45, 505), self.display))
         self.text_list.append(Text(16, f"Dwellers: {self.data.people}", (255, 255, 255), (45, 540), self.display))
-        self.text_list.append(Text(16, f"Education: {self.data.education}", (255, 255, 255), (45, 560), self.display))
-        self.text_list.append(Text(16, f"Safety: {self.data.safety}", (255, 255, 255), (45, 580), self.display))
-        self.text_list.append(Text(16, f"Health: {self.data.health}", (255, 255, 255), (45, 600), self.display))
+        self.text_list.append(Text(16, f"Education: {self.data.education}", (104, 19, 240), (45, 560), self.display))
+        self.text_list.append(Text(16, f"Safety: {self.data.safety}", (104, 19, 240), (45, 580), self.display))
+        self.text_list.append(Text(16, f"Health: {self.data.health}", (104, 19, 240), (45, 600), self.display))
 
         self.progressbar = Progressbar(self.display, (30, 645), 1, 330, False)
 
@@ -80,8 +80,16 @@ class Town:
         self.gui_icon_avg = images['avg_icon'].convert_alpha()
         self.gui_icon_sad = images['sad_icon'].convert_alpha()
 
+        
+
         self.button_list.append(Button(1218, 608, 130, 27, BUTTON_COL, BUTTON_COL_H,
                                        BUTTON_COL_P, 16, self.show_mini_games, self.display, 'MINI-GAMES'))
+        
+        self.button_list.append(Button(1218, 635, 130, 27, BUTTON_COL, BUTTON_COL_H,
+                                       BUTTON_COL_P, 16, lambda: self.game_state_manager.set_state('Store'), self.display, 'STORE'))
+        
+        self.button_list.append(Button(1218, 662, 130, 27, BUTTON_COL, BUTTON_COL_H,
+                                       BUTTON_COL_P, 16, self.quit_and_save, self.display, 'QUIT'))
 
         self.mini_games_menu_active = False
         self.mini_games_buttons = []
@@ -92,6 +100,9 @@ class Town:
         self.mini_games_buttons.append(Button(1148, 527, 200, 27, BUTTON_COL, BUTTON_COL_H,
                                               BUTTON_COL_P, 16, lambda: self.start_minigame('ah'), self.display, 'Animal Hunt'))
 
+    def quit_and_save(self):
+        save(self.data)
+        pygame.quit()
 
     def start_minigame(self, minigame):
         current_time = pygame.time.get_ticks()

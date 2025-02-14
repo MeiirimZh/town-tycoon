@@ -13,24 +13,54 @@
             "house_type": "small_house",
             "x": 500,
             "y": 300
+        },
+        {
+            "house_type": "hospital",
+            "x": 195,
+            "y": 380
+        },
+        {
+            "house_type": "hospital",
+            "x": 595,
+            "y": 441
+        },
+        {
+            "house_type": "guard_house",
+            "x": 704,
+            "y": 208
+        },
+        {
+            "house_type": "guard_house",
+            "x": 475,
+            "y": 63
+        },
+        {
+            "house_type": "school",
+            "x": 160,
+            "y": -11
+        },
+        {
+            "house_type": "school",
+            "x": 740,
+            "y": -26
         }
     ],
-    "schools": 0,
-    "guard_houses": 49,
-    "hospitals": 49,
-    "education": 35,
-    "safety": 64,
-    "health": 64,
+    "schools": 2,
+    "guard_houses": 2,
+    "hospitals": 2,
+    "education": 50,
+    "safety": 50,
+    "health": 50,
     "resource_types": [
         "Food",
         "Water",
         "Wood",
         "Stone"
     ],
-    "food": 275,
-    "water": 458,
-    "wood": 17,
-    "stone": 37,
+    "food": 1000,
+    "water": 2500,
+    "wood": 8499,
+    "stone": 9549,
     "food_storage": 1000,
     "water_storage": 2500,
     "wood_click_value": 1,

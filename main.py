@@ -40,11 +40,7 @@ class Game:
                     utils.save(self.data)
                     pygame.quit()
                     sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        utils.save(self.data)
-                        pygame.quit()
-                        sys.exit()
+
 
             self.states[self.game_state_manager.get_state()].run(events)
 
