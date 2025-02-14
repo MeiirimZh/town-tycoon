@@ -85,26 +85,28 @@ class Town:
 
         self.mini_games_menu_active = False
         self.mini_games_buttons = []
-        self.mini_games_buttons.append(Button(1198, 581, 150, 27, BUTTON_COL, BUTTON_COL_H,
+        self.mini_games_buttons.append(Button(1148, 581, 200, 27, BUTTON_COL, BUTTON_COL_H,
                                               BUTTON_COL_P, 16, lambda: self.start_minigame('ct'), self.display, 'Chop Tree'))
-        self.mini_games_buttons.append(Button(1198, 554, 150, 27, BUTTON_COL, BUTTON_COL_H,
+        self.mini_games_buttons.append(Button(1148, 554, 200, 27, BUTTON_COL, BUTTON_COL_H,
                                               BUTTON_COL_P, 16, lambda: self.start_minigame('ms'), self.display, 'Mining Stone'))
-        self.mini_games_buttons.append(Button(1198, 527, 150, 27, BUTTON_COL, BUTTON_COL_H,
+        self.mini_games_buttons.append(Button(1148, 527, 200, 27, BUTTON_COL, BUTTON_COL_H,
                                               BUTTON_COL_P, 16, lambda: self.start_minigame('ah'), self.display, 'Animal Hunt'))
-
 
 
     def start_minigame(self, minigame):
         current_time = pygame.time.get_ticks()
         if minigame == 'ah':
-            self.animal_hunt.start_new_game(current_time)
-            self.game_state_manager.set_state('Animal Hunt')
+            if self.animal_hunt_active:
+                self.animal_hunt.start_new_game(current_time)
+                self.game_state_manager.set_state('Animal Hunt')
         elif minigame == 'ct':
-            self.chop_tree.start_new_game(current_time)
-            self.game_state_manager.set_state('Chop Tree')
+            if self.chop_tree_active:
+                self.chop_tree.start_new_game(current_time)
+                self.game_state_manager.set_state('Chop Tree')
         elif minigame == 'ms':
-            self.mining_stone.start_new_game(current_time)
-            self.game_state_manager.set_state('Mining Stone')
+            if self.mining_stone_active:
+                self.mining_stone.start_new_game(current_time)
+                self.game_state_manager.set_state('Mining Stone')
 
     def harvest(self):
         if self.can_harvest:
@@ -189,10 +191,6 @@ class Town:
         if self.basic_resources_timer.has_finished():
             self.data.food = max(0, self.data.food - self.data.people // 5)
             self.data.water = max(0, self.data.water - self.data.people // 2)
-            # print(f'Food: {self.data.food}')
-            # print(f'Water: {self.data.water}')
-
-        # print(f'Stability: {self.calculate_stability()}')
 
         self.town_development_timer.update(current_time)
 
@@ -273,9 +271,27 @@ class Town:
         self.simulation.run(events)
 
         if self.mini_games_menu_active:
+            self.simulation.can_scroll = False
             for b in self.mini_games_buttons:
                 b.check_inp(mouse_pos)
+                if 'Chop Tree' in b.text:
+                    if self.chop_tree_cooldown_timer.time_left() == 0:
+                        b.text = 'Chop Tree: OK'
+                    else:
+                        b.text = f'Chop Tree: {self.chop_tree_cooldown_timer.time_left()}'
+                elif 'Mining Stone' in b.text:
+                    if self.mining_stone_cooldown_timer.time_left() == 0:
+                        b.text = 'Mining Stone: OK'
+                    else:
+                        b.text = f'Mining Stone: {self.mining_stone_cooldown_timer.time_left()}'
+                elif 'Animal Hunt' in b.text:
+                    if self.animal_hunt_cooldown_timer.time_left() == 0:
+                        b.text = 'Animal Hunt: OK'
+                    else:
+                        b.text = f'Animal Hunt: {self.animal_hunt_cooldown_timer.time_left()}'
                 b.draw()
+        else:
+            self.simulation.can_scroll = True
 
         if self.calculate_stability() == 1:
             self.display.blit(self.gui_icon_sad, (266, 486))
