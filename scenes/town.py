@@ -209,16 +209,21 @@ class Town:
                 self.data.wood += self.data.lumberjacks * 2
                 self.data.stone += self.data.miners * 2
                 self.data.food += self.data.hunters * 2
+                self.data.water += self.data.water_collectors * 2
             elif 'Low Efficiency' in self.data.debuffs:
                 self.data.wood += self.data.lumberjacks // 2
                 self.data.stone += self.data.miners // 2
                 self.data.food += self.data.hunters // 2
+                self.data.water += self.data.water_collectors // 2
             else:
                 self.data.wood += self.data.lumberjacks
                 self.data.stone += self.data.miners
                 self.data.food += self.data.hunters
+                self.data.water += self.data.water_collectors
             if self.data.food >= self.data.food_storage:
                 self.data.food = self.data.food_storage
+            if self.data.water >= self.data.water_storage:
+                self.data.water = self.data.water_storage
 
         self.basic_resources_timer.update(current_time)
 

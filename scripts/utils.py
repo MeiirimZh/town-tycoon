@@ -85,6 +85,7 @@ def load():
         data.lumberjacks = data_dict["lumberjacks"]
         data.miners = data_dict["miners"]
         data.hunters = data_dict["hunters"]
+        data.water_collectors = data_dict["water_collectors"]
         data.upgrade_wood_click_value_cost = data_dict["upgrade_wood_click_value_cost"]
         data.upgrade_stone_click_value_cost = data_dict["upgrade_stone_click_value_cost"]
         data.hire_lumberjack_cost = data_dict["hire_lumberjack_cost"]

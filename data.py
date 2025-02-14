@@ -42,6 +42,7 @@ class Data:
         self.lumberjacks = 0
         self.miners = 0
         self.hunters = 0
+        self.water_collectors = 0
 
         # Upgrade costs
         self.upgrade_wood_click_value_cost = 50
@@ -51,6 +52,7 @@ class Data:
         self.hire_lumberjack_cost = 300
         self.hire_miner_cost = 500
         self.hire_hunter_cost = 100
+        self.hire_water_collector_cost = 100
 
     def to_dict(self):
         return {
@@ -81,6 +83,7 @@ class Data:
         "lumberjacks": self.lumberjacks,
         "miners": self.miners,
         "hunters": self.hunters,
+        "water_collectors": self.water_collectors,
         "upgrade_wood_click_value_cost": self.upgrade_wood_click_value_cost,
         "upgrade_stone_click_value_cost": self.upgrade_stone_click_value_cost,
         "hire_lumberjack_cost": self.hire_lumberjack_cost,

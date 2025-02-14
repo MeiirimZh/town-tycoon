@@ -29,15 +29,19 @@ class Store:
                              Button(200, 200, 100, 30, BUTTON_COL, BUTTON_COL_H,
                              BUTTON_COL_P, 16, lambda: self.hire_miner(), self.display, "HIRE"),
                              Button(200, 200, 100, 30, BUTTON_COL, BUTTON_COL_H,
-                             BUTTON_COL_P, 16, lambda: self.hire_hunter(), self.display, "HIRE")]
+                             BUTTON_COL_P, 16, lambda: self.hire_hunter(), self.display, "HIRE"),
+                             Button(200, 200, 100, 30, BUTTON_COL, BUTTON_COL_H,
+                             BUTTON_COL_P, 16, lambda: self.hire_water_collector(), self.display, "HIRE")]
 
         self.hire_text = [Text(20, '300 wood: +1 lumberjack', (255, 255, 255), (750, 200), self.display),
                           Text(20, '500 stone: +1 miner', (255, 255, 255), (750, 250), self.display),
-                          Text(20, '100 food: +5 hunters', (255, 255, 255), (750, 300), self.display)]
+                          Text(20, '100 food: +5 hunters', (255, 255, 255), (750, 300), self.display),
+                          Text(20, '100 water: +5 water collectors', (255, 255, 255), (750, 300), self.display)]
 
         self.hire_lumberjack_layout = HLayout([self.hire_text[0], self.hire_buttons[0]], self.display)
         self.hire_miner_layout = HLayout([self.hire_text[1], self.hire_buttons[1]], self.display)
         self.hire_hunter_layout = HLayout([self.hire_text[2], self.hire_buttons[2]], self.display)
+        self.hire_water_collector_layout = HLayout([self.hire_text[3], self.hire_buttons[3]], self.display)
 
         self.info_text = [Text(16, 'Wood', (255, 255, 255), (1150, 700), self.display),
                           Text(16, 'Stone', (255, 255, 255), (1150, 720), self.display),
@@ -132,3 +136,9 @@ class Store:
                 self.data.workers += 5
                 self.data.hunters += 5
                 self.data.food -= self.data.hire_hunter_cost
+    def hire_water_collector(self):
+        if self.data.workers < self.data.people:
+            if self.data.water >= self.data.hire_water_collector_cost:
+                self.data.workers += 5
+                self.data.water_collectors += 5
+                self.data.water -= self.data.hire_water_collector_cost
