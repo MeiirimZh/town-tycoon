@@ -36,7 +36,7 @@ class Store:
         self.hire_text = [Text(20, '300 wood: +1 lumberjack', (255, 255, 255), (750, 200), self.display),
                           Text(20, '500 stone: +1 miner', (255, 255, 255), (750, 250), self.display),
                           Text(20, '100 food: +5 hunters', (255, 255, 255), (750, 300), self.display),
-                          Text(20, '100 water: +5 water collectors', (255, 255, 255), (750, 300), self.display)]
+                          Text(20, '100 water: +5 water collectors', (255, 255, 255), (750, 350), self.display)]
 
         self.hire_lumberjack_layout = HLayout([self.hire_text[0], self.hire_buttons[0]], self.display)
         self.hire_miner_layout = HLayout([self.hire_text[1], self.hire_buttons[1]], self.display)
@@ -84,6 +84,8 @@ class Store:
                 text.update_msg(f'{int(self.data.hire_miner_cost)} stone: +1 miner')
             if 'hunters' in text.msg:
                 text.update_msg(f'{int(self.data.hire_hunter_cost)} food: +5 hunters')
+            if 'water collectors' in text.msg:
+                text.update_msg(f'{int(self.data.hire_water_collector_cost)} water: +5 water collectors')
 
         self.upgrade_wood_layout.draw(30)
         self.upgrade_stone_layout.draw(30)
@@ -91,6 +93,7 @@ class Store:
         self.hire_lumberjack_layout.draw(30)
         self.hire_miner_layout.draw(30)
         self.hire_hunter_layout.draw(30)
+        self.hire_water_collector_layout.draw(30)
 
         for text in self.info_text:
             text.draw()
@@ -107,9 +110,6 @@ class Store:
             for button in self.hire_buttons:
                 button.click(event)
             self.exit.click(event)
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    self.game_state_manager.set_state('Town')
 
     def upgrade_wood_click_value(self):
         if self.data.wood >= self.data.upgrade_wood_click_value_cost:
