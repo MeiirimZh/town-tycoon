@@ -48,9 +48,9 @@
     "schools": 2,
     "guard_houses": 2,
     "hospitals": 2,
-    "education": 50,
-    "safety": 50,
-    "health": 50,
+    "education": 51,
+    "safety": 51,
+    "health": 51,
     "resource_types": [
         "Food",
         "Water",

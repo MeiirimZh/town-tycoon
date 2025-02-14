@@ -12,15 +12,25 @@ class Text:
         self.color = color
         self.position = position
         self.display = display
+        self.alpha = 255
+        self.update_surface()
+
+    def update_surface(self):
+        self.text_surface = pygame.Surface((self.font.size(self.msg)[0], self.font.size(self.msg)[1]), pygame.SRCALPHA)
+        text_render = self.font.render(self.msg, False, (*self.color, self.alpha))
+        self.text_surface.blit(text_render, (0, 0))
+
+    def set_alpha(self, alpha):
+        self.alpha = alpha
+        self.update_surface()
 
     def draw(self, new_pos=None):
         pos = new_pos if new_pos else self.position
-        text_surface = self.font.render(self.msg, False, self.color)
-        text_rect = text_surface.get_rect(topleft=pos)
-        self.display.blit(text_surface, text_rect)
-    
+        self.display.blit(self.text_surface, pos)
+
     def update_msg(self, new_msg):
         self.msg = new_msg
+        self.update_surface()
 
     def update_pos(self, new_pos):
         self.position = new_pos
