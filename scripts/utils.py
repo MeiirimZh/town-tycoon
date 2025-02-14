@@ -91,5 +91,7 @@ def load():
         data.hire_lumberjack_cost = data_dict["hire_lumberjack_cost"]
         data.hire_miner_cost = data_dict["hire_miner_cost"]
         data.hire_hunter_cost = data_dict["hire_hunter_cost"]
+        data.hire_water_collector_cost = data_dict["hire_water_collector_cost"]
+        data.water_collectors = data_dict["water_collectors"]
 
     return data

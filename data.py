@@ -88,6 +88,8 @@ class Data:
         "upgrade_stone_click_value_cost": self.upgrade_stone_click_value_cost,
         "hire_lumberjack_cost": self.hire_lumberjack_cost,
         "hire_miner_cost": self.hire_miner_cost,
-        "hire_hunter_cost": self.hire_hunter_cost
+        "hire_hunter_cost": self.hire_hunter_cost,
+        "water_collectors": self.water_collectors,
+        "hire_water_collector_cost": self.hire_water_collector_cost
         }
     
