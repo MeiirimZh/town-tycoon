@@ -33,7 +33,9 @@ images = {'crosshair': pygame.image.load('images/crosshair.png'),
           'school': pygame.image.load('images/houses/school.png'),
           'school_icon': pygame.image.load('images/houses/icons/school_icon.png'),
           'guard_house': pygame.image.load('images/houses/barraks.png'),
+          'guard_house_icon': pygame.image.load('images/houses/icons/guard_house_icon.png'),
           'hospital': pygame.image.load('images/houses/Asylum.png'),
+          'hospital_icon': pygame.image.load('images/houses/icons/asylum_icon.png'),
           'ct_bg': pygame.image.load('images/backgrounds/chop_tree_bg.png'),
           'ah_bg': pygame.image.load('images/backgrounds/an_hunt_bg.png'),
           'animal': pygame.image.load('images/taksa_s_rogami.png'),
@@ -52,7 +54,9 @@ images = {'crosshair': pygame.image.load('images/crosshair.png'),
           'sh_icon': pygame.image.load('images/gui/icons/super_happy.png'),
           'h_icon': pygame.image.load('images/gui/icons/happy_happy.png'),
           'avg_icon': pygame.image.load('images/gui/icons/zloi.png'),
-          'sad_icon': pygame.image.load('images/gui/icons/sad.png')}
+          'sad_icon': pygame.image.load('images/gui/icons/sad.png'),
+          'store_bg': pygame.image.load('images/gui/panels/store_bg.png'),
+          'button': pygame.image.load('images/gui/button.png')}
 
 sounds = {'cancel1': pygame.mixer.Sound('sounds/Cancel 1.mp3'),
           'build': pygame.mixer.Sound('sounds/Build.wav')}

@@ -19,7 +19,7 @@ class Simulation:
 
         self.surface = pygame.Surface((self.width, self.height))
 
-        self.hint_text = Text(10, '[SPACE] to reset the position', (255, 255, 255), (30, self.height-30), self.surface)
+        self.hint_text = Text(10, '[SPACE] to reset the position, [MBM] to open build menu', (255, 255, 255), (30, self.height-30), self.surface)
 
         self.left_border = pygame.Rect(0, 0, 50, self.height)
         self.right_border = pygame.Rect(self.width-50, 0, 50, self.height)

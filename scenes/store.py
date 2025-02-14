@@ -1,6 +1,6 @@
 import pygame
 
-from config import BUTTON_COL, BUTTON_COL_H, BUTTON_COL_P
+from config import BUTTON_COL, BUTTON_COL_H, BUTTON_COL_P, images
 from scripts.textandbuttons import Text, Button
 from scripts.hlayout import HLayout
 
@@ -42,6 +42,9 @@ class Store:
         self.info_text = [Text(16, 'Wood', (255, 255, 255), (1150, 700), self.display),
                           Text(16, 'Stone', (255, 255, 255), (1150, 720), self.display),
                           Text(16, 'Food', (255, 255, 255), (1150, 740), self.display)]
+
+        self.bg = images['store_bg']
+        self.btn_bg = images['button']
 
     def run(self, events):
         mouse_pos = pygame.mouse.get_pos()
