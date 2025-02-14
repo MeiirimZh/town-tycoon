@@ -15,6 +15,8 @@ class Simulation:
         self.height = height
         self.display = display
         self.data = data
+
+        self.can_scroll = True
         self.prokrutka_speed = 5
 
         self.surface = pygame.Surface((self.width, self.height))
@@ -53,17 +55,18 @@ class Simulation:
         mouse_pos = pygame.mouse.get_pos()
         local_mouse_pos = (mouse_pos[0] - self.x, mouse_pos[1] - self.y)
 
-        if self.left_border.collidepoint(local_mouse_pos):
-            self.scroll[0] += self.prokrutka_speed
+        if self.can_scroll:
+            if self.left_border.collidepoint(local_mouse_pos):
+                self.scroll[0] += self.prokrutka_speed
 
-        if self.right_border.collidepoint(local_mouse_pos):
-            self.scroll[0] -= self.prokrutka_speed
+            if self.right_border.collidepoint(local_mouse_pos):
+                self.scroll[0] -= self.prokrutka_speed
 
-        if self.top_border.collidepoint(local_mouse_pos):
-            self.scroll[1] += self.prokrutka_speed
+            if self.top_border.collidepoint(local_mouse_pos):
+                self.scroll[1] += self.prokrutka_speed
 
-        if self.bottom_border.collidepoint(local_mouse_pos):
-            self.scroll[1] -= self.prokrutka_speed
+            if self.bottom_border.collidepoint(local_mouse_pos):
+                self.scroll[1] -= self.prokrutka_speed
 
         if self.is_building:
             self.building_house_x = local_mouse_pos[0]
