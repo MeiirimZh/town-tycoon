@@ -66,6 +66,7 @@ def load():
         data.schools = data_dict["schools"]
         data.guard_houses = data_dict["guard_houses"]
         data.hospitals = data_dict["hospitals"]
+        data.price_multiplier = data_dict["price_multiplier"]
         data.education = data_dict["education"]
         data.safety = data_dict["safety"]
         data.health = data_dict["health"]

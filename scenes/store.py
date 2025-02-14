@@ -32,7 +32,7 @@ class Store:
                              BUTTON_COL_P, 16, lambda: self.hire_hunter(), self.display, "HIRE")]
 
         self.hire_text = [Text(20, '300 wood: +1 lumberjack', (255, 255, 255), (750, 200), self.display),
-                          Text(20, '500 stone: 1+ miner', (255, 255, 255), (750, 250), self.display),
+                          Text(20, '500 stone: +1 miner', (255, 255, 255), (750, 250), self.display),
                           Text(20, '100 food: +5 hunters', (255, 255, 255), (750, 300), self.display)]
 
         self.hire_lumberjack_layout = HLayout([self.hire_text[0], self.hire_buttons[0]], self.display)
@@ -58,9 +58,17 @@ class Store:
 
         for text in self.upgrade_text:
             if 'wood' in text.msg:
-                text.update_msg(f'{self.data.upgrade_wood_click_value_cost} wood: +{self.data.wood_click_value * 2 + 1 - self.data.wood_click_value} wood per click')
+                text.update_msg(f'{int(self.data.upgrade_wood_click_value_cost)} wood: +{self.data.wood_click_value * 2 + 1 - self.data.wood_click_value} wood per click')
             if 'stone' in text.msg:
-                text.update_msg(f'{self.data.upgrade_stone_click_value_cost} stone: +{self.data.stone_click_value * 2 + 1 - self.data.stone_click_value} stone per click')
+                text.update_msg(f'{int(self.data.upgrade_stone_click_value_cost)} stone: +{self.data.stone_click_value * 2 + 1 - self.data.stone_click_value} stone per click')
+
+        for text in self.hire_text:
+            if 'lumberjack' in text.msg:
+                text.update_msg(f'{int(self.data.hire_lumberjack_cost)} wood: +1 lumberjack')
+            if 'miner' in text.msg:
+                text.update_msg(f'{int(self.data.hire_miner_cost)} stone: +1 miner')
+            if 'hunters' in text.msg:
+                text.update_msg(f'{int(self.data.hire_hunter_cost)} food: +5 hunters')
 
         self.upgrade_wood_layout.draw(30)
         self.upgrade_stone_layout.draw(30)
