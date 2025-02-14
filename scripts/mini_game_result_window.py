@@ -36,4 +36,6 @@ class MiniGameResultWindow:
             self.button.click(event)
 
     def return_to_town(self):
+        pygame.mixer.music.load('music/terraria.mp3')
+        pygame.mixer.music.play(-1)
         self.game_state_manager.set_state('Town')

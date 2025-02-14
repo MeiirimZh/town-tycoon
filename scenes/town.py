@@ -69,6 +69,14 @@ class Town:
         self.text_list.append(Text(16, f"Safety: {self.data.safety}", (104, 19, 240), (45, 580), self.display))
         self.text_list.append(Text(16, f"Health: {self.data.health}", (104, 19, 240), (45, 600), self.display))
 
+        self.health_buff = ""
+        self.ed_buff = ""
+        self.guard_buff = ""
+
+        self.text_list.append(Text(16, self.health_buff, (255, 255, 255), (730, 630), self.display))
+        self.text_list.append(Text(16, self.ed_buff, (255, 255, 255), (730, 670), self.display))
+        self.text_list.append(Text(16, self.guard_buff, (255, 255, 255), (730, 710), self.display))
+
         self.progressbar = Progressbar(self.display, (30, 645), 1, 330, False)
 
         self.main_menu = images['gui_main_menu'].convert_alpha()
@@ -109,6 +117,8 @@ class Town:
         self.base_hire_lumberjack_cost = 300
         self.base_hire_miner_cost = 500
         self.base_hire_hunter_cost = 100
+        pygame.mixer.music.load('music/terraria.mp3')
+        pygame.mixer.music.play(-1)
 
     def quit_and_save(self):
         save(self.data)
@@ -166,6 +176,28 @@ class Town:
         mouse_pos = pygame.mouse.get_pos()
         current_time = pygame.time.get_ticks()
 
+        if "Perfect Health" in self.data.buffs:
+            self.health_buff = "Perfect Health: +1 dweller per 5s"
+        elif "Pandemic" in self.data.debuffs:
+            self.health_buff = "Pandemic: -1 dweller per 5s"
+        elif "Pandemic" not in self.data.debuffs and "Perfect Health" not in self.data.buffs:
+            self.health_buff = ""
+        
+        if "High Efficiency" in self.data.buffs:
+            self.ed_buff = "High Efficiency: 2x worker efficiency"
+        elif "Low Efficiency" in self.data.debuffs:
+            self.ed_buff = "Low Efficiency: 0.5x worker efficiency"
+        elif "Low Efficiency" not in self.data.debuffs and "High Efficiency" not in self.data.buffs:
+            self.ed_buff = ""
+        
+        if "Good Reputation" in self.data.buffs:
+            self.guard_buff = "Good Reputation: Low prices"
+        elif "Smooth Criminal" in self.data.debuffs:
+            self.guard_buff = "Smooth Criminal: High prices"
+        elif "Smooth Criminal" not in self.data.debuffs and "Good Reputation" not in self.data.buffs:
+            self.guard_buff = ""
+
+
         self.btn_cooldown.update(current_time)
 
         if self.btn_cooldown.has_finished():
@@ -187,6 +219,11 @@ class Town:
                 self.data.buffs.append('High Efficiency')
             if 'Low Efficiency' in self.data.debuffs:
                 self.data.debuffs.remove('Low Efficiency')
+        elif self.data.education < 75 and self.data.education > 25:
+            if 'High Efficiency' in self.data.buffs:
+                self.data.buffs.remove('High Efficiency')
+            if 'Low Efficiency' in self.data.debuffs:
+                self.data.debuffs.remove('Low Efficiency')
         elif self.data.education <= 25:
             if 'Low Efficiency' not in self.data.debuffs:
                 self.data.debuffs.append('Low Efficiency')
@@ -196,6 +233,11 @@ class Town:
         if self.data.health >= 75:
             if 'Perfect Health' not in self.data.buffs:
                 self.data.buffs.append('Perfect Health')
+            if 'Pandemic' in self.data.debuffs:
+                self.data.debuffs.remove('Pandemic')
+        elif self.data.health < 75 and self.data.health > 25:
+            if 'Perfect Health' in self.data.buffs:
+                self.data.buffs.remove('Perfect Health')
             if 'Pandemic' in self.data.debuffs:
                 self.data.debuffs.remove('Pandemic')
         elif self.data.health <= 25:
@@ -269,6 +311,11 @@ class Town:
                 self.data.buffs.append('Good Reputation')
             if 'Smooth Criminal' in self.data.debuffs:
                 self.data.debuffs.remove('Smooth Criminal')
+        elif self.data.safety < 75 and self.data.safety > 25:
+            if 'Good Reputation' in self.data.buffs:
+                self.data.buffs.remove('Good Reputation')
+            if 'Smooth Criminal' in self.data.debuffs:
+                self.data.debuffs.remove('Smooth Criminal')
         elif self.data.safety <= 25:
             if 'Smooth Criminal' not in self.data.debuffs:
                 self.data.debuffs.append('Smooth Criminal')
@@ -326,6 +373,9 @@ class Town:
         self.text_list[7].update_msg(f"Education: {self.data.education}")
         self.text_list[8].update_msg(f"Safety: {self.data.safety}")
         self.text_list[9].update_msg(f"Health: {self.data.health}")
+        self.text_list[10].update_msg(self.health_buff)
+        self.text_list[11].update_msg(self.ed_buff)
+        self.text_list[12].update_msg(self.guard_buff)
 
         for t in self.text_list:
             t.draw()
