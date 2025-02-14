@@ -34,6 +34,9 @@ class Town:
         self.basic_resources_timer = Timer(True)
         self.basic_resources_timer.start(30, 0)
 
+        self.people_timer = Timer(True)
+        self.people_timer.start(5, 0)
+
         self.town_development_timer = Timer(True)
         self.town_development_timer.start(15, 0)
 
@@ -80,14 +83,14 @@ class Town:
         self.gui_icon_avg = images['avg_icon'].convert_alpha()
         self.gui_icon_sad = images['sad_icon'].convert_alpha()
 
-        
+
 
         self.button_list.append(Button(1218, 608, 130, 27, BUTTON_COL, BUTTON_COL_H,
                                        BUTTON_COL_P, 16, self.show_mini_games, self.display, 'MINI-GAMES'))
-        
+
         self.button_list.append(Button(1218, 635, 130, 27, BUTTON_COL, BUTTON_COL_H,
                                        BUTTON_COL_P, 16, lambda: self.game_state_manager.set_state('Store'), self.display, 'STORE'))
-        
+
         self.button_list.append(Button(1218, 662, 130, 27, BUTTON_COL, BUTTON_COL_H,
                                        BUTTON_COL_P, 16, self.quit_and_save, self.display, 'QUIT'))
 
@@ -99,6 +102,13 @@ class Town:
                                               BUTTON_COL_P, 16, lambda: self.start_minigame('ms'), self.display, 'Mining Stone'))
         self.mini_games_buttons.append(Button(1148, 527, 200, 27, BUTTON_COL, BUTTON_COL_H,
                                               BUTTON_COL_P, 16, lambda: self.start_minigame('ah'), self.display, 'Animal Hunt'))
+
+        self.base_upgrade_wood_click_value_cost = 50
+        self.base_upgrade_stone_click_value_cost = 100
+
+        self.base_hire_lumberjack_cost = 300
+        self.base_hire_miner_cost = 500
+        self.base_hire_hunter_cost = 100
 
     def quit_and_save(self):
         save(self.data)
@@ -173,13 +183,26 @@ class Town:
         self.worker_timer.update(current_time)
 
         if self.data.education >= 75:
-            self.data.buffs.append('High Efficiency')
+            if 'High Efficiency' not in self.data.buffs:
+                self.data.buffs.append('High Efficiency')
             if 'Low Efficiency' in self.data.debuffs:
                 self.data.debuffs.remove('Low Efficiency')
         elif self.data.education <= 25:
-            self.data.debuffs.append('Low Efficiency')
+            if 'Low Efficiency' not in self.data.debuffs:
+                self.data.debuffs.append('Low Efficiency')
             if 'High Efficiency' in self.data.buffs:
                 self.data.buffs.remove('High Efficiency')
+
+        if self.data.health >= 75:
+            if 'Perfect Health' not in self.data.buffs:
+                self.data.buffs.append('Perfect Health')
+            if 'Pandemic' in self.data.debuffs:
+                self.data.debuffs.remove('Pandemic')
+        elif self.data.health <= 25:
+            if 'Pandemic' not in self.data.debuffs:
+                self.data.debuffs.append('Pandemic')
+            if 'Perfect Health' in self.data.buffs:
+                self.data.buffs.remove('Perfect Health')
 
         if self.worker_timer.has_finished():
             if 'High Efficiency' in self.data.buffs:
@@ -227,6 +250,38 @@ class Town:
                 pass
             else:
                 self.data.health = min(100, self.data.health + 1)
+
+        self.people_timer.update(current_time)
+
+        if self.people_timer.has_finished():
+            if 'Perfect Health' in self.data.buffs:
+                self.data.people += 1
+            elif 'Pandemic' in self.data.debuffs:
+                self.data.people -= 1
+
+        if self.data.safety >= 75:
+            if 'Good Reputation' not in self.data.buffs:
+                self.data.buffs.append('Good Reputation')
+            if 'Smooth Criminal' in self.data.debuffs:
+                self.data.debuffs.remove('Smooth Criminal')
+        elif self.data.safety <= 25:
+            if 'Smooth Criminal' not in self.data.debuffs:
+                self.data.debuffs.append('Smooth Criminal')
+            if 'Good Reputation' in self.data.buffs:
+                self.data.buffs.remove('Good Reputation')
+
+        if 'Good Reputation' in self.data.buffs:
+            self.data.price_multiplier = 0.5
+        elif 'Smooth Criminal' in self.data.debuffs:
+            self.data.price_multiplier = 1.5
+        else:
+            self.data.price_multiplier = 1.0
+
+        self.data.upgrade_wood_click_value_cost = self.base_upgrade_wood_click_value_cost * self.data.price_multiplier
+        self.data.upgrade_stone_click_value_cost = self.base_upgrade_stone_click_value_cost * self.data.price_multiplier
+        self.data.hire_lumberjack_cost = self.base_hire_lumberjack_cost * self.data.price_multiplier
+        self.data.hire_miner_cost = self.base_hire_miner_cost * self.data.price_multiplier
+        self.data.hire_hunter_cost = self.base_hire_hunter_cost * self.data.price_multiplier
 
         self.animal_hunt_cooldown_timer.update(current_time)
 
@@ -314,26 +369,6 @@ class Town:
             self.display.blit(self.gui_icon_sh, (266, 486))
 
         for event in events:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    self.game_state_manager.set_state('Store')
-                if event.key == pygame.K_s:
-                    if self.animal_hunt_active:
-                        self.animal_hunt.start_new_game(current_time)
-                        self.game_state_manager.set_state('Animal Hunt')
-                if event.key == pygame.K_d:
-                    if self.chop_tree_active:
-                        self.chop_tree.start_new_game(current_time)
-                        self.game_state_manager.set_state('Chop Tree')
-                if event.key == pygame.K_f:
-                    if self.mining_stone_active:
-                        self.mining_stone.start_new_game(current_time)
-                        self.game_state_manager.set_state('Mining Stone')
-                if event.key == pygame.K_c:
-                    self.data.wood = 9999
-                    self.data.stone = 9999
-                    self.data.food = self.data.food_storage
-                    self.data.water = self.data.water_storage
             for b in self.button_list:
                 b.click(event)
             for b in self.mini_games_buttons:

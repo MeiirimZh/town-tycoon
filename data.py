@@ -13,6 +13,7 @@ class Data:
         self.schools = 0
         self.guard_houses = 0
         self.hospitals = 0
+        self.price_multiplier = 1
 
         # Town development
         self.education = 50
@@ -61,6 +62,7 @@ class Data:
         "schools": self.schools,
         "guard_houses": self.guard_houses,
         "hospitals": self.hospitals,
+        "price_multiplier": self.price_multiplier,
         "education": self.education,
         "safety": self.safety,
         "health": self.health,
