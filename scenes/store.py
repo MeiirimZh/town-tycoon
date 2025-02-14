@@ -43,20 +43,22 @@ class Store:
                           Text(16, 'Stone', (255, 255, 255), (1150, 720), self.display),
                           Text(16, 'Food', (255, 255, 255), (1150, 740), self.display)]
 
-        self.bg = images['store_bg']
-        self.btn_bg = images['button']
+        self.bg = pygame.transform.scale(images['gui_build_menu'].convert_alpha(), (1666, 1366))
+        self.btn_bg = images['button'].convert_alpha()
 
     def run(self, events):
         mouse_pos = pygame.mouse.get_pos()
 
-        self.display.fill((136, 69, 53))
+        self.display.blit(self.bg, (-200, -200))
 
         self.title.draw()
 
         for button in self.upgrade_buttons:
+            self.display.blit(self.btn_bg, (button.x - 10, button.y - 5))
             button.check_inp(mouse_pos)
 
         for button in self.hire_buttons:
+            self.display.blit(self.btn_bg, (button.x - 10, button.y - 5))
             button.check_inp(mouse_pos)
 
         for text in self.upgrade_text:
