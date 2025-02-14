@@ -51,7 +51,7 @@ class BuildHouseMenu:
                                          BUTTON_COL_P, 14, lambda: self.build_house('school'),
                                          self.display, 'BUILD')
 
-        self.guard_house_img = images['school_icon']
+        self.guard_house_img = images['guard_house_icon']
         self.guard_house_title = Text(14, 'Guard house', (255, 255, 255), (371, 217), self.display)
         self.guard_house_resources = Text(12, '350 wood, 125 stone', (255, 255, 255), (371, 234), self.display)
         self.guard_house_result = Text(12, 'Provides safety', (255, 255, 255), (371, 249), self.display)
@@ -59,7 +59,7 @@ class BuildHouseMenu:
                                           BUTTON_COL_P, 14, lambda: self.build_house('guard_house'),
                                           self.display, 'BUILD')
 
-        self.hospital_img = images['school_icon']
+        self.hospital_img = images['hospital_icon']
         self.hospital_title = Text(14, 'Hospital', (255, 255, 255), (371, 280), self.display)
         self.hospital_resources = Text(12, '300 wood, 100 stone', (255, 255, 255), (371, 297), self.display)
         self.hospital_result = Text(12, 'Provides health', (255, 255, 255), (371, 312), self.display)
