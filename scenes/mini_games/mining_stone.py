@@ -47,6 +47,9 @@ class MiningStone:
         self.bg = images['m_bg'].convert_alpha()
 
     def start_new_game(self, current_time):
+        pygame.mixer.music.load('music/mini_games/mine.mp3')
+        pygame.mixer.music.play(-1)
+
         self.timer.start(30, current_time)
         self.round_timer.start(10, current_time)
 

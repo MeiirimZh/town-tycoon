@@ -46,6 +46,9 @@ class Store:
         self.bg = pygame.transform.scale(images['gui_build_menu'].convert_alpha(), (1666, 1366))
         self.btn_bg = images['button'].convert_alpha()
 
+        self.exit = Button(0, 738, 100, 30, BUTTON_COL, BUTTON_COL_H,
+                             BUTTON_COL_P, 16, lambda: self.game_state_manager.set_state('Town'), self.display, "Exit")
+
     def run(self, events):
         mouse_pos = pygame.mouse.get_pos()
 
@@ -60,6 +63,9 @@ class Store:
         for button in self.hire_buttons:
             self.display.blit(self.btn_bg, (button.x - 10, button.y - 5))
             button.check_inp(mouse_pos)
+        
+        self.exit.check_inp(mouse_pos)
+        self.exit.draw()
 
         for text in self.upgrade_text:
             if 'wood' in text.msg:
@@ -96,6 +102,7 @@ class Store:
                 button.click(event)
             for button in self.hire_buttons:
                 button.click(event)
+            self.exit.click(event)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
                     self.game_state_manager.set_state('Town')
