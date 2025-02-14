@@ -41,7 +41,6 @@ class Intro:
         self.text.text_surface.set_alpha(self.alpha)
         self.authors.text_surface.set_alpha(self.alpha)
         self.authors2.text_surface.set_alpha(self.alpha)
-        print(self.vladdebil)
 
         self.text.draw()
         self.authors.draw()
