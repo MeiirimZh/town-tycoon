@@ -69,6 +69,14 @@ class Town:
         self.text_list.append(Text(16, f"Safety: {self.data.safety}", (104, 19, 240), (45, 580), self.display))
         self.text_list.append(Text(16, f"Health: {self.data.health}", (104, 19, 240), (45, 600), self.display))
 
+        self.health_buff = ""
+        self.ed_buff = ""
+        self.guard_buff = ""
+
+        self.text_list.append(Text(16, self.health_buff, (255, 255, 255), (730, 630), self.display))
+        self.text_list.append(Text(16, self.ed_buff, (255, 255, 255), (730, 670), self.display))
+        self.text_list.append(Text(16, self.guard_buff, (255, 255, 255), (730, 710), self.display))
+
         self.progressbar = Progressbar(self.display, (30, 645), 1, 330, False)
 
         self.main_menu = images['gui_main_menu'].convert_alpha()
@@ -165,6 +173,28 @@ class Town:
     def run(self, events):
         mouse_pos = pygame.mouse.get_pos()
         current_time = pygame.time.get_ticks()
+
+        if "Perfect Health" in self.data.buffs:
+            self.health_buff = "Perfect Health"
+        elif "Pandemic" in self.data.debuffs:
+            self.health_buff = "Pandemic"
+        else:
+            self.health_buff = ""
+        
+        if "High Efficiency" in self.data.buffs:
+            self.ed_buff = "High Efficiency"
+        elif "Low Efficiency" in self.data.debuffs:
+            self.ed_buff = "Low Efficiency"
+        else:
+            self.ed_buff = ""
+        
+        if "Good Reputation" in self.data.buffs:
+            self.guard_buff = "Good Reputation"
+        elif "Smooth Criminal" in self.data.debuffs:
+            self.guard_buff = "Smooth Criminal"
+        else:
+            self.guard_buff = ""
+
 
         self.btn_cooldown.update(current_time)
 
@@ -321,6 +351,9 @@ class Town:
         self.text_list[7].update_msg(f"Education: {self.data.education}")
         self.text_list[8].update_msg(f"Safety: {self.data.safety}")
         self.text_list[9].update_msg(f"Health: {self.data.health}")
+        self.text_list[10].update_msg(self.health_buff)
+        self.text_list[11].update_msg(self.ed_buff)
+        self.text_list[12].update_msg(self.guard_buff)
 
         for t in self.text_list:
             t.draw()
