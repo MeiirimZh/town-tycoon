@@ -16,9 +16,9 @@
         }
     ],
     "schools": 0,
-    "guard_houses": 0,
-    "hospitals": 0,
-    "education": 50,
+    "guard_houses": 49,
+    "hospitals": 49,
+    "education": 49,
     "safety": 50,
     "health": 50,
     "resource_types": [
@@ -27,8 +27,8 @@
         "Wood",
         "Stone"
     ],
-    "food": 760,
-    "water": 1900,
+    "food": 240,
+    "water": 600,
     "wood": 0,
     "stone": 0,
     "food_storage": 1000,
