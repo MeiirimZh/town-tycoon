@@ -32,7 +32,7 @@ class Town:
         self.worker_timer.start(1, 0)
 
         self.basic_resources_timer = Timer(True)
-        self.basic_resources_timer.start(1, 0)
+        self.basic_resources_timer.start(30, 0)
 
         self.town_development_timer = Timer(True)
         self.town_development_timer.start(15, 0)
@@ -61,6 +61,10 @@ class Town:
         self.text_list.append(Text(24, f":{self.data.food}", (255, 255, 255), (460, 690), self.display))
         self.text_list.append(Text(24, f":{self.data.water}", (255, 255, 255), (610, 690), self.display))
         self.text_list.append(Text(24, "Stability:", (255, 255, 255), (45, 505), self.display))
+        self.text_list.append(Text(16, f"Dwellers: {self.data.people}", (255, 255, 255), (45, 540), self.display))
+        self.text_list.append(Text(16, f"Education: {self.data.education}", (255, 255, 255), (45, 560), self.display))
+        self.text_list.append(Text(16, f"Safety: {self.data.safety}", (255, 255, 255), (45, 580), self.display))
+        self.text_list.append(Text(16, f"Health: {self.data.health}", (255, 255, 255), (45, 600), self.display))
 
         self.progressbar = Progressbar(self.display, (30, 645), 1, 330, False)
 
@@ -127,9 +131,10 @@ class Town:
     def calculate_stability(self):
         food_scores = get_section(self.data.food, self.data.food_storage, 12)
         water_scores = get_section(self.data.water, self.data.water_storage, 8)
-        total_scores = food_scores + water_scores
 
+        total_scores = food_scores + water_scores
         return get_quarter(total_scores, 20)
+
 
     def show_mini_games(self):
         self.mini_games_menu_active = not self.mini_games_menu_active
@@ -151,15 +156,6 @@ class Town:
         self.display.blit(self.gui_food, (410, 680))
         self.display.blit(self.gui_water, (560, 680))
         self.display.blit(self.st_frame, (250, 470))
-
-        if self.calculate_stability() == 1:
-            self.display.blit(self.gui_icon_sad, (266, 486))
-        elif self.calculate_stability() == 2:
-            self.display.blit(self.gui_icon_avg, (266, 486))
-        elif self.calculate_stability() == 3:
-            self.display.blit(self.gui_icon_h, (266, 486))
-        elif self.calculate_stability() == 4:
-            self.display.blit(self.gui_icon_sh, (266, 486))
 
         self.worker_timer.update(current_time)
 
@@ -185,6 +181,8 @@ class Town:
                 self.data.wood += self.data.lumberjacks
                 self.data.stone += self.data.miners
                 self.data.food += self.data.hunters
+            if self.data.food >= self.data.food_storage:
+                self.data.food = self.data.food_storage
 
         self.basic_resources_timer.update(current_time)
 
@@ -255,6 +253,10 @@ class Town:
         self.text_list[2].update_msg(f':{self.data.stone}')
         self.text_list[3].update_msg(f':{self.data.food}')
         self.text_list[4].update_msg(f':{self.data.water}')
+        self.text_list[6].update_msg(f"Dwellers: {self.data.people}")
+        self.text_list[7].update_msg(f"Education: {self.data.education}")
+        self.text_list[8].update_msg(f"Safety: {self.data.safety}")
+        self.text_list[9].update_msg(f"Health: {self.data.health}")
 
         for t in self.text_list:
             t.draw()
@@ -274,6 +276,15 @@ class Town:
             for b in self.mini_games_buttons:
                 b.check_inp(mouse_pos)
                 b.draw()
+
+        if self.calculate_stability() == 1:
+            self.display.blit(self.gui_icon_sad, (266, 486))
+        elif self.calculate_stability() == 2:
+            self.display.blit(self.gui_icon_avg, (266, 486))
+        elif self.calculate_stability() == 3:
+            self.display.blit(self.gui_icon_h, (266, 486))
+        elif self.calculate_stability() == 4:
+            self.display.blit(self.gui_icon_sh, (266, 486))
 
         for event in events:
             if event.type == pygame.KEYDOWN:
