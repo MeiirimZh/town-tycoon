@@ -27,8 +27,8 @@
         "Wood",
         "Stone"
     ],
-    "food": 760,
-    "water": 1900,
+    "food": 800,
+    "water": 2000,
     "wood": 0,
     "stone": 0,
     "food_storage": 1000,

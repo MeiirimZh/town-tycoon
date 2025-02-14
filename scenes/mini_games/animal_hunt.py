@@ -103,7 +103,10 @@ class AnimalHunt:
             result = random.randint(self.reward - 10, self.reward + 10)
 
             self.meat += result
-            self.data.food += result
+            if self.data.food + result > self.data.food_storage:
+                self.data.food = self.data.food_storage
+            else:
+                self.data.food += result
 
             self.rounds += 1
             self.generate_animals()
