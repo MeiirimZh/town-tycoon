@@ -369,26 +369,6 @@ class Town:
             self.display.blit(self.gui_icon_sh, (266, 486))
 
         for event in events:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    self.game_state_manager.set_state('Store')
-                if event.key == pygame.K_s:
-                    if self.animal_hunt_active:
-                        self.animal_hunt.start_new_game(current_time)
-                        self.game_state_manager.set_state('Animal Hunt')
-                if event.key == pygame.K_d:
-                    if self.chop_tree_active:
-                        self.chop_tree.start_new_game(current_time)
-                        self.game_state_manager.set_state('Chop Tree')
-                if event.key == pygame.K_f:
-                    if self.mining_stone_active:
-                        self.mining_stone.start_new_game(current_time)
-                        self.game_state_manager.set_state('Mining Stone')
-                if event.key == pygame.K_c:
-                    self.data.wood = 9999
-                    self.data.stone = 9999
-                    self.data.food = self.data.food_storage
-                    self.data.water = self.data.water_storage
             for b in self.button_list:
                 b.click(event)
             for b in self.mini_games_buttons:
